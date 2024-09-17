@@ -1,4 +1,4 @@
-package dk.obhnothing.persistence.entities;
+package dk.obhnothing.persistence.dto;
 
 import java.time.LocalDate;
 
@@ -10,11 +10,13 @@ public class MDetailsDTO
 
   Boolean adult;
   String backdrop_path;
-  String belongs_to_collection; // class
-    String id;
-    String name;
-    String poster_path;
-    String backdrop_path;
+  Collection belongs_to_collection; // class
+  static class Collection {
+      String id;
+      String name;
+      String poster_path;
+      String backdrop_path;
+  }
   Double budget;
   GenreDTO[] genres;
   String homepage;
@@ -26,14 +28,18 @@ public class MDetailsDTO
   String overview;
   Double popularity;
   String poster_path;
-  String production_companies; //class
+  ProductionCompany[] production_companies; //class
+  static class ProductionCompany {
       String id;
       String logo_path;
       String name;
       String origin_country;
-  String production_countries; //class
+  }
+  ProductionCountry[] production_countries; //class
+  static class ProductionCountry {
       String iso_3166_1;
       String name;
+  }
   LocalDate release_date;
   Double revenue;
   Double runtime;
