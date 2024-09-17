@@ -6,7 +6,7 @@ package dk.obhnothing.persistence.dto;
 public class GenreDTO
 {
 
-    Double id; // 28,
-    String name; // "Action"
+    Double id;
+    String name;
 
 }
