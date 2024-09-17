@@ -1,10 +1,14 @@
 package dk.obhnothing;
 
+import java.util.List;
 import java.util.Locale;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
+import dk.obhnothing.persistence.dto.MBaseDTO;
+import dk.obhnothing.persistence.service.MService;
 import jakarta.persistence.EntityManagerFactory;
 
 /*
@@ -54,6 +58,16 @@ public class App
         System.out.println(dbuser);
         System.out.println(dbpw);
         System.out.println();
+
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.findAndRegisterModules();
+
+        int pages = 1;
+        MService.SearchCriteria sc = MService.SearchCriteria.builder().pageIndex(1).pageTotal(pages).build();
+        List<MBaseDTO> res = MService.fetch(sc, apitoken);
+        System.out.printf("Got %d in %d page(s):%n%n", res.size(), pages);
+        for (MBaseDTO mBaseDTO : res)
+            System.out.println(mBaseDTO.original_title);
 
         EMF.close();
 
