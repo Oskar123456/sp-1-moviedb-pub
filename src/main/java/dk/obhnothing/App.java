@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
+import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.service.MService;
 import jakarta.persistence.EntityManagerFactory;
@@ -68,6 +69,12 @@ public class App
         System.out.printf("Got %d in %d page(s):%n%n", res.size(), pages);
         for (MBaseDTO mBaseDTO : res)
             System.out.println(mBaseDTO.original_title);
+
+        List<CreditActorDTO> creditDTOs = MService.fetchCreds(533535, apitoken);
+        System.out.printf("Got %d creds:%n%n", creditDTOs.size());
+        for (CreditActorDTO creditDTO : creditDTOs) {
+            System.out.println(creditDTO.name);
+        }
 
         EMF.close();
 

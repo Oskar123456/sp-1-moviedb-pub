@@ -10,7 +10,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dk.obhnothing.persistence.dto.CreditActorDTO;
+import dk.obhnothing.persistence.dto.CreditCrewDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
+import dk.obhnothing.persistence.dto.MDetailsDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class MService
 {
 
-    private static String baseurl = "https://api.themoviedb.org/3/discover/movie?";
+    private static String baseurl = "https://api.themoviedb.org/3/";
 
     public static List<MBaseDTO> fetch(SearchCriteria sc, String apiToken)
     {
@@ -34,12 +37,13 @@ public class MService
         try {
             for (int i = 0; i < sc.pageTotal; i++) {
                 HttpRequest request = HttpRequest.newBuilder().uri(buildURI(sc)).
+                    setHeader("accept", "application/json").
                     setHeader("Authorization", "Bearer " + apiToken).GET().build();
                 System.err.println("fetching: " + request.uri().toString());
+                System.err.println(request.headers());
                 HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
                 String responseStr = response.body();
-                //System.err.println("response: " + responseStr);
-                MResults results = jsonMapper.readValue(responseStr, MResults.class);
+                MList results = jsonMapper.readValue(responseStr, MList.class);
                 finalResults.addAll(List.of(results.results));
                 sc.pageIndex++;
             }
@@ -51,9 +55,40 @@ public class MService
         return finalResults;
     }
 
+    public static MDetailsDTO fetchDets(Integer mId, String apiToken)
+    {
+        return null;
+    }
+
+    public static List<CreditActorDTO> fetchCreds(Integer mId, String apiToken)
+    {
+        List<CreditActorDTO> finalResults = new ArrayList<>();
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.findAndRegisterModules();
+        HttpClient client = HttpClient.newHttpClient();
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder().
+                setHeader("accept", "application/json").
+                uri(URI.create(baseurl + "movie/" + mId.toString() + "/credits")).
+                setHeader("Authorization", "Bearer " + apiToken).GET().build();
+            System.err.println("fetching: " + request.toString());
+            System.err.println(request.headers());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            String responseStr = response.body();
+            MCreditList results = jsonMapper.readValue(responseStr, MCreditList.class);
+            finalResults.addAll(List.of(results.cast));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+        return finalResults;
+    }
+
     private static URI buildURI(SearchCriteria sc)
     {
-        String uriStr = baseurl;
+        String uriStr = baseurl + "discover/movie?";
         uriStr += "page=" + ((sc.pageIndex != null) ? sc.pageIndex.toString() : 1);
         uriStr += "include_adult=" + ((sc.includeAdult != null) ? sc.includeAdult.toString() : false);
         uriStr += "&include_video=" + ((sc.includeVideo != null) ? sc.includeVideo.toString() : false);
@@ -86,7 +121,7 @@ public class MService
  */
 @EqualsAndHashCode
 @NoArgsConstructor
-class MResults
+class MList
 {
     public Integer page;
     public Integer total_pages;
@@ -94,6 +129,17 @@ class MResults
     public MBaseDTO[] results;
 }
 
+/**
+ * MCreditList
+ */
+@EqualsAndHashCode
+@NoArgsConstructor
+class MCreditList
+{
+    public Integer id;
+    public CreditActorDTO[] cast;
+    public CreditCrewDTO[] crew;
+}
 
 
 

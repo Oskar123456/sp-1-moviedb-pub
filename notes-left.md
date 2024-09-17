@@ -1,8 +1,14 @@
 # TODO
 
-- first
+-
 - second
 - third
+
+# notes
+
+- fetch modifies searchCriteria argument.
+-
+-
 
 
 
