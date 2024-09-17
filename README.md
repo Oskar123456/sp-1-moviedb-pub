@@ -2,6 +2,10 @@
 
 cphdat sem-3 school project
 
+### Group
+
+Oskar Bahner Hansen (cph-oh82@cphbusiness.dk)
+
 ### Description
 
 Data can potentially be worth a lot of money. A common use case is to collect, store, and enrich related data from various sources (API’s, webpages etc) - and then expose the data in useful places. Sometimes new and interesting products can emerge from this.

@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import com.github.javafaker.Faker;
 
-import dk.obhnothing.persistence.entities.t;
-
 /*
  * Web development....
  * -------------------
