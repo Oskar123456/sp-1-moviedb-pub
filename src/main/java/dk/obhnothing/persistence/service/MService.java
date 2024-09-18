@@ -28,7 +28,6 @@ import dk.obhnothing.persistence.entities.MCreditActor;
 import dk.obhnothing.persistence.entities.MCreditCrew;
 import dk.obhnothing.persistence.entities.MKeyword;
 import dk.obhnothing.persistence.entities.Movie;
-import dk.obhnothing.persistence.entities.Person;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

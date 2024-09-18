@@ -16,6 +16,5 @@ public abstract class UniId<T, U>
 
     @Id @NaturalId public U id;
     @SuppressWarnings("unchecked") public T withUId(U uId) { this.id = uId; return (T)this; }
-    public U getUId() { return id; };
 
 }
