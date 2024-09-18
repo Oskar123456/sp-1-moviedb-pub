@@ -12,6 +12,7 @@ import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
 import dk.obhnothing.persistence.dto.PersonDTO;
+import dk.obhnothing.persistence.entities.Company;
 import dk.obhnothing.persistence.service.MService;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -88,6 +89,9 @@ public class App
         PersonDTO personDTO = MService.fetchPerson(pId, apitoken);
         System.out.printf("Person details (%d):%n%n", pId);
         System.out.println(personDTO);
+
+        Company com = new Company().withUId(3);
+        System.out.println(com);
 
         EMF.close();
 

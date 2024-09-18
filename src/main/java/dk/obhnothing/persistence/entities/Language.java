@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
 
+import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,9 +19,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Language
+public class Language extends UniId<Language, String>
 {
-    @Id @NaturalId public String iso_639_1;
     public String english_name;
     public String name;
     /* RELATIONS */

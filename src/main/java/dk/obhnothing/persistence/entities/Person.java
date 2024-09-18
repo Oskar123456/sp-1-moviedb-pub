@@ -2,6 +2,7 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person
+public class Person extends UniId<Person, Integer>
 {
 
-    public Integer id;
     public Boolean adult;
     public Integer gender;
     public String name;

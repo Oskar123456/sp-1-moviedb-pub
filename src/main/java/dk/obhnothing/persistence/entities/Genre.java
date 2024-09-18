@@ -2,6 +2,7 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Genre
+public class Genre extends UniId<Genre, Integer>
 {
 
-    public Integer id;
     public String name;
     /* RELATIONS */
     @ManyToMany public Set<Movie> movies;

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
 
+import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -17,9 +18,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Country
+public class Country extends UniId<Country, String>
 {
-    @Id @NaturalId public String iso_3166_1;
     public String name;
     /* RELATIONS */
     @ManyToMany public Set<Movie> moviesprodin;

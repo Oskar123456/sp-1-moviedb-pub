@@ -146,14 +146,14 @@ public class MService
         }
     }
 
-    public static Genre mapGenreDTOToEnt(GenreDTO g) { return new Genre(g.id, g.name, null); }
-    public static MKeyword mapKeywordDTOToEnt(MKeywordDTO k) { return new MKeyword(k.id, k.name, null); }
     public static MCreditActor mapCreditActorDTOToEnt(CreditActorDTO c) { return new MCreditActor(c.id, c.order, c.character, null, null); }
     public static MCreditCrew mapCreditCrewDTOToEnt(CreditCrewDTO c) { return new MCreditCrew(c.id, c.job, null, null); }
-    public static Language mapLanguageDTOToEnt(MDetailsDTO.SpokenLanguage l) { return new Language(l.iso_639_1, l.english_name, l.name, null, null); }
-    public static Country mapCountryDTOToEnt(MDetailsDTO.ProductionCountry c) { return new Country(c.iso_3166_1, c.name, null, null); }
-    public static Company mapCompanyDTOToEnt(MDetailsDTO.ProductionCompany c) { return new Company(c.id, c.logo_path, c.name, null, null); }
-    public static MCollection mapCollectionDTOToEnt(MDetailsDTO.Collection c) { return new MCollection(c.id, c.name, c.poster_path, c.backdrop_path, null); }
+    public static Genre mapGenreDTOToEnt(GenreDTO g) { return new Genre().withUId(g.id); }
+    public static MKeyword mapKeywordDTOToEnt(MKeywordDTO k) { return new MKeyword().withUId(k.id); }
+    public static Language mapLanguageDTOToEnt(MDetailsDTO.SpokenLanguage l) { return new Language().withUId(l.iso_639_1); }
+    public static Country mapCountryDTOToEnt(MDetailsDTO.ProductionCountry c) { return new Country().withUId(c.iso_3166_1); }
+    public static Company mapCompanyDTOToEnt(MDetailsDTO.ProductionCompany c) { return new Company().withUId(c.id); }
+    public static MCollection mapCollectionDTOToEnt(MDetailsDTO.Collection c) { return new MCollection().withUId(c.id); }
 
     public static Movie mapDTOtoEnt(MDetailsDTO details)
     {
