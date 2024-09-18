@@ -11,11 +11,10 @@ public class MCreditActor
 {
 
     public Integer id;
-    public Person person;
-    public Movie movie;
     public Integer order;
     public String character;
     /* RELATIONS */
-    @ManyToOne public Set<Person> person;
+    @ManyToOne public Person person;
+    @ManyToOne public Movie movie;
 
 }

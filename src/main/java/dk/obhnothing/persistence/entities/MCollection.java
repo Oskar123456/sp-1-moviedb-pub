@@ -1,8 +1,9 @@
 package dk.obhnothing.persistence.entities;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 /**
  * Collection

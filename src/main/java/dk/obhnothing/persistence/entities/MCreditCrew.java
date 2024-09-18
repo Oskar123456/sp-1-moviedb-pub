@@ -11,10 +11,9 @@ public class MCreditCrew
 {
 
     public Integer id;
-    public Person person;
-    public Movie movie;
     public String job;
     /* RELATIONS */
-    @ManyToOne public Set<Person> person;
+    @ManyToOne public Person person;
+    @ManyToOne public Movie movie;
 
 }

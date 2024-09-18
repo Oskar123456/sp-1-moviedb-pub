@@ -21,6 +21,6 @@ public class Person
     public String profile_path;
     /* RELATIONS */
     @OneToMany public Set<MCreditCrew> crewsin;
-    @OneToMany public Set<MActorCrew> actsin;
+    @OneToMany public Set<MCreditActor> actsin;
 
 }
