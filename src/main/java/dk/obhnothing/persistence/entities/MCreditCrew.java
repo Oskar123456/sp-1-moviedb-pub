@@ -2,11 +2,15 @@ package dk.obhnothing.persistence.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * MCreditCrew
  */
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class MCreditCrew
 {
 

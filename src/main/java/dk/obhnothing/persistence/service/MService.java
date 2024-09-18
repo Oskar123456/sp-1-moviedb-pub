@@ -6,15 +6,29 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.CreditCrewDTO;
+import dk.obhnothing.persistence.dto.GenreDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
+import dk.obhnothing.persistence.dto.MKeywordDTO;
 import dk.obhnothing.persistence.dto.PersonDTO;
+import dk.obhnothing.persistence.entities.Company;
+import dk.obhnothing.persistence.entities.Country;
+import dk.obhnothing.persistence.entities.Genre;
+import dk.obhnothing.persistence.entities.Language;
+import dk.obhnothing.persistence.entities.MCollection;
+import dk.obhnothing.persistence.entities.MCreditActor;
+import dk.obhnothing.persistence.entities.MCreditCrew;
+import dk.obhnothing.persistence.entities.MKeyword;
+import dk.obhnothing.persistence.entities.Movie;
+import dk.obhnothing.persistence.entities.Person;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -130,6 +144,87 @@ public class MService
             System.err.println(e.getMessage());
             return null;
         }
+    }
+
+    public static Genre mapGenreDTOToEnt(GenreDTO g) { return new Genre(g.id, g.name, null); }
+    public static MKeyword mapKeywordDTOToEnt(MKeywordDTO k) { return new MKeyword(k.id, k.name, null); }
+    public static MCreditActor mapCreditActorDTOToEnt(CreditActorDTO c) { return new MCreditActor(c.id, c.order, c.character, null, null); }
+    public static MCreditCrew mapCreditCrewDTOToEnt(CreditCrewDTO c) { return new MCreditCrew(c.id, c.job, null, null); }
+    public static Language mapLanguageDTOToEnt(MDetailsDTO.SpokenLanguage l) { return new Language(l.iso_639_1, l.english_name, l.name, null, null); }
+    public static Country mapCountryDTOToEnt(MDetailsDTO.ProductionCountry c) { return new Country(c.iso_3166_1, c.name, null, null); }
+    public static Company mapCompanyDTOToEnt(MDetailsDTO.ProductionCompany c) { return new Company(c.id, c.logo_path, c.name, null, null); }
+    public static MCollection mapCollectionDTOToEnt(MDetailsDTO.Collection c) { return new MCollection(c.id, c.name, c.poster_path, c.backdrop_path, null); }
+
+    public static Movie mapDTOtoEnt(MDetailsDTO details)
+    {
+        Movie m = new Movie();
+        m.adult = details.adult;
+        m.backdrop_path = details.backdrop_path;
+        m.original_language = details.original_language;
+        m.original_title = details.original_title;
+        m.overview = details.overview;
+        m.popularity = details.popularity;
+        m.poster_path = details.poster_path;
+        m.release_date = details.release_date;
+        m.title = details.title;
+        m.video = details.video;
+        m.vote_average = details.vote_average;
+        m.vote_count = details.vote_count;
+        m.budget = details.budget;
+        m.homepage = details.homepage;
+        m.imdb_id = details.imdb_id;
+        m.revenue = details.revenue;
+        m.runtime = details.runtime;
+        m.status = details.status;
+        m.tagline = details.tagline;
+        /* RELATIONS */
+        m.genres = new HashSet<>(Arrays.stream(details.genres).map(MService::mapGenreDTOToEnt).toList());
+        //m.genres = new HashSet<>(Arrays.asList(details.genres));
+        //m.keywords = new HashSet<>(Arrays.asList(details.keywords));
+        //m.actors = new HashSet<>(Arrays.asList(details.actors));
+        //m.crew = new HashSet<>(Arrays.asList(details.crew));
+        //m.origin_country = new HashSet<>(Arrays.asList(details.origin_country));
+        //m.spoken_languages = new HashSet<>(Arrays.asList(details.spoken_languages));
+        //m.production_companies = new HashSet<>(Arrays.asList(details.production_companies));
+        //m.production_countries = new HashSet<>(Arrays.asList(details.production_countries));
+        //m.collection = new MCollection();
+        return m;
+    }
+
+    public static void storeMovie()
+    {
+
+        /*
+    @Id @GeneratedValue public Integer id;
+    public Boolean adult;
+    public String backdrop_path;
+    public String original_language;
+    public String original_title;
+    public String overview;
+    public Double popularity;
+    public String poster_path;
+    public LocalDate release_date;
+    public String title;
+    public Boolean video;
+    public Double vote_average;
+    public Integer vote_count;
+    public Double budget;
+    public String homepage;
+    public String imdb_id;
+    public Double revenue;
+    public Double runtime;
+    public String status;
+    public String tagline;
+    public Set<Genre> genres;
+    public Set<MKeyword> keywords;
+    public Set<MCreditActor> actors;
+    public Set<MCreditCrew> crew;
+    public Set<Country> origin_country;
+    public Set<Language> spoken_languages;
+    public Set<Company> production_companies;
+    public Set<Country> production_countries;
+    public MCollection collection;
+         */
     }
 
     private static URI buildURI(SearchCriteria sc)

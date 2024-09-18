@@ -4,11 +4,15 @@ import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * Person
  */
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person
 {
 

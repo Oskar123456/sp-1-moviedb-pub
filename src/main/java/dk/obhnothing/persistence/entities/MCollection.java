@@ -4,11 +4,15 @@ import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * Collection
  */
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class MCollection
 {
     public Integer id;
