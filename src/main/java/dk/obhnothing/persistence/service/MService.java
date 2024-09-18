@@ -14,14 +14,20 @@ import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.CreditCrewDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
+import dk.obhnothing.persistence.dto.PersonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * MService
+/*
+ * Web development....
+ * -------------------
+ * Oskar Bahner Hansen
+ * .........2024-09-17
+ * -------------------
  */
+
 public class MService
 {
 
@@ -57,10 +63,27 @@ public class MService
 
     public static MDetailsDTO fetchDets(Integer mId, String apiToken)
     {
-        return null;
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.findAndRegisterModules();
+        HttpClient client = HttpClient.newHttpClient();
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder().
+                uri(URI.create(baseurl + "movie/" + mId.toString() + "?append_to_response=credits")).
+                setHeader("accept", "application/json").
+                setHeader("Authorization", "Bearer " + apiToken).GET().build();
+            System.err.println("fetching: " + request.toString());
+            System.err.println(request.headers());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            String responseStr = response.body();
+            return jsonMapper.readValue(responseStr, MDetailsDTO.class);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
-    public static List<CreditActorDTO> fetchCreds(Integer mId, String apiToken)
+    public static List<CreditActorDTO> fetchActorCreds(Integer mId, String apiToken)
     {
         List<CreditActorDTO> finalResults = new ArrayList<>();
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -86,6 +109,28 @@ public class MService
         return finalResults;
     }
 
+    public static PersonDTO fetchPerson(Integer pId, String apiToken)
+    {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.findAndRegisterModules();
+        HttpClient client = HttpClient.newHttpClient();
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder().
+                uri(URI.create(baseurl + "person/" + pId.toString())).
+                setHeader("accept", "application/json").
+                setHeader("Authorization", "Bearer " + apiToken).GET().build();
+            System.err.println("fetching: " + request.toString());
+            System.err.println(request.headers());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            String responseStr = response.body();
+            return jsonMapper.readValue(responseStr, PersonDTO.class);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
     private static URI buildURI(SearchCriteria sc)
     {
         String uriStr = baseurl + "discover/movie?";
@@ -98,10 +143,12 @@ public class MService
         return URI.create(uriStr);
     }
 
+    /**
+     * SearchCriteria used in movie fetches (scrapes)
+     */
     @NoArgsConstructor @AllArgsConstructor @Builder
     public static class SearchCriteria
     {
-
         public Boolean includeAdult;
         public Boolean includeVideo;
         public String language;
@@ -110,7 +157,6 @@ public class MService
         public Boolean sortAsc;
         public Integer pageIndex;
         public Integer pageTotal;
-
     }
 
 
@@ -140,13 +186,6 @@ class MCreditList
     public CreditActorDTO[] cast;
     public CreditCrewDTO[] crew;
 }
-
-
-
-
-
-
-
 
 
 

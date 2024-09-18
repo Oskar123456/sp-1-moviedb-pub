@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 public class CreditActorDTO
 {
 
+      public Integer id;
       public Boolean adult;
       public Integer gender;
-      public Integer id;
       public String known_for_department;
       public String name;
       public String original_name;
@@ -21,17 +21,5 @@ public class CreditActorDTO
       public String character;
       public String credit_id;
       public Integer order;
- /*
-      "adult": false,
-      "gender": 2,
-      "id": 17825,
-      "known_for_department": "Directing",
-      "name": "Shawn Levy",
-      "original_name": "Shawn Levy",
-      "popularity": 20.985,
-      "profile_path": "/j1CXZgmfvFeD7S3PYtsEk8H3ebB.jpg",
-      "credit_id": "622bc4c8a579f9006f1f0a6d",
-      "department": "Directing",
-      "job": "Director"
-*/
+
 }

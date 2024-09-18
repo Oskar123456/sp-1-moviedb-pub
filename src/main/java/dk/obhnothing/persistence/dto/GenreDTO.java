@@ -6,7 +6,7 @@ package dk.obhnothing.persistence.dto;
 public class GenreDTO
 {
 
-    Double id;
-    String name;
+    public Integer id;
+    public String name;
 
 }

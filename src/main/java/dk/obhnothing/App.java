@@ -9,6 +9,8 @@ import com.github.javafaker.Faker;
 import dk.obhnothing.persistence.HibernateConfig;
 import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
+import dk.obhnothing.persistence.dto.MDetailsDTO;
+import dk.obhnothing.persistence.dto.PersonDTO;
 import dk.obhnothing.persistence.service.MService;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -16,8 +18,7 @@ import jakarta.persistence.EntityManagerFactory;
  * Web development....
  * -------------------
  * Oskar Bahner Hansen
- * ......obhnothing.dk
- * .........2024-09-10
+ * .........2024-09-17
  * -------------------
  */
 
@@ -70,11 +71,20 @@ public class App
         for (MBaseDTO mBaseDTO : res)
             System.out.println(mBaseDTO.original_title);
 
-        List<CreditActorDTO> creditDTOs = MService.fetchCreds(533535, apitoken);
+        List<CreditActorDTO> creditDTOs = MService.fetchActorCreds(533535, apitoken);
         System.out.printf("Got %d creds:%n%n", creditDTOs.size());
         for (CreditActorDTO creditDTO : creditDTOs) {
             System.out.println(creditDTO.name);
         }
+
+        MDetailsDTO detailsDTO = MService.fetchDets(533535, apitoken);
+        System.out.printf("Details (%d credits):%n%n", detailsDTO.credits.cast.length + detailsDTO.credits.crew.length);
+        System.out.println(detailsDTO.original_title);
+
+        int pId = 10859;
+        PersonDTO personDTO = MService.fetchPerson(pId, apitoken);
+        System.out.printf("Person details (%d):%n%n", pId);
+        System.out.println(personDTO);
 
         EMF.close();
 

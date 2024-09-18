@@ -1,8 +1,7 @@
 # TODO
 
--
-- second
-- third
+- fetch rest of info like Details & make
+  the thing for DB
 
 # notes
 
