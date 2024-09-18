@@ -1,9 +1,9 @@
 package dk.obhnothing.persistence.entities;
 
 /**
- * Genre
+ * MKeyword
  */
-public class Genre
+public class MKeyword
 {
 
     public Integer id;

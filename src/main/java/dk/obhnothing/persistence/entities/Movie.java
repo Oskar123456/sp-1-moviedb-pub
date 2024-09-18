@@ -33,6 +33,7 @@ public class Movie
     public String tagline;
     // RELATIONS
     public Genre[] genres;
+    public MKeyword[] keywords;
     public Country[] origin_country;
     public Language[] spoken_languages;
     public Company[] production_companies;

@@ -1,5 +1,6 @@
 package dk.obhnothing;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,8 +69,9 @@ public class App
         MService.SearchCriteria sc = MService.SearchCriteria.builder().pageIndex(1).pageTotal(pages).build();
         List<MBaseDTO> res = MService.fetch(sc, apitoken);
         System.out.printf("Got %d in %d page(s):%n%n", res.size(), pages);
-        for (MBaseDTO mBaseDTO : res)
+        for (MBaseDTO mBaseDTO : res) {
             System.out.println(mBaseDTO.original_title);
+        }
 
         List<CreditActorDTO> creditDTOs = MService.fetchActorCreds(533535, apitoken);
         System.out.printf("Got %d creds:%n%n", creditDTOs.size());
@@ -80,6 +82,7 @@ public class App
         MDetailsDTO detailsDTO = MService.fetchDets(533535, apitoken);
         System.out.printf("Details (%d credits):%n%n", detailsDTO.credits.cast.length + detailsDTO.credits.crew.length);
         System.out.println(detailsDTO.original_title);
+        System.out.println(Arrays.toString(detailsDTO.keywords.keywords));
 
         int pId = 10859;
         PersonDTO personDTO = MService.fetchPerson(pId, apitoken);

@@ -14,6 +14,7 @@ import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.CreditCrewDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
+import dk.obhnothing.persistence.dto.MKeywordDTO;
 import dk.obhnothing.persistence.dto.PersonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,7 +70,8 @@ public class MService
 
         try {
             HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create(baseurl + "movie/" + mId.toString() + "?append_to_response=credits")).
+                uri(URI.create(baseurl + "movie/" + mId.toString()
+                            + "?append_to_response=credits,keywords")).
                 setHeader("accept", "application/json").
                 setHeader("Authorization", "Bearer " + apiToken).GET().build();
             System.err.println("fetching: " + request.toString());
@@ -186,16 +188,4 @@ class MCreditList
     public CreditActorDTO[] cast;
     public CreditCrewDTO[] crew;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

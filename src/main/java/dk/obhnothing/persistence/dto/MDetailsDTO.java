@@ -2,9 +2,12 @@ package dk.obhnothing.persistence.dto;
 
 import java.time.LocalDate;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * MDetailsDTO
  */
+@EqualsAndHashCode
 public class MDetailsDTO
 {
 
@@ -34,8 +37,10 @@ public class MDetailsDTO
     public Boolean video;
     public Double vote_average;
     public Integer vote_count;
+    public KeywordList keywords;
     public Credits credits;
 
+    @EqualsAndHashCode
     public static class ProductionCompany {
         public Integer id;
         public String logo_path;
@@ -43,17 +48,20 @@ public class MDetailsDTO
         public String origin_country;
     }
 
+    @EqualsAndHashCode
     public static class ProductionCountry {
         public String iso_3166_1;
         public String name;
     }
 
+    @EqualsAndHashCode
     public static class SpokenLanguage {
         public String english_name;
         public String iso_639_1;
         public String name;
     }
 
+    @EqualsAndHashCode
     public static class Collection {
         public Integer id;
         public String name;
@@ -61,9 +69,15 @@ public class MDetailsDTO
         public String backdrop_path;
     }
 
+    @EqualsAndHashCode
     public static class Credits {
         public CreditActorDTO[] cast;
         public CreditCrewDTO[] crew;
+    }
+
+    @EqualsAndHashCode
+    public static class KeywordList {
+        public MKeywordDTO[] keywords;
     }
 
 }
