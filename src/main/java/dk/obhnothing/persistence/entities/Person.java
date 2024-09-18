@@ -1,8 +1,14 @@
 package dk.obhnothing.persistence.entities;
 
+import java.util.Set;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
 /**
  * Person
  */
+@Entity
 public class Person
 {
 
@@ -13,5 +19,8 @@ public class Person
     public String original_name;
     public Double popularity;
     public String profile_path;
+    /* RELATIONS */
+    @OneToMany public Set<MCreditCrew> crewsin;
+    @OneToMany public Set<MActorCrew> actsin;
 
 }

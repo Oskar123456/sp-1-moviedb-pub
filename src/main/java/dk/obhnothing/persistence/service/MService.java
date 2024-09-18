@@ -14,7 +14,6 @@ import dk.obhnothing.persistence.dto.CreditActorDTO;
 import dk.obhnothing.persistence.dto.CreditCrewDTO;
 import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
-import dk.obhnothing.persistence.dto.MKeywordDTO;
 import dk.obhnothing.persistence.dto.PersonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

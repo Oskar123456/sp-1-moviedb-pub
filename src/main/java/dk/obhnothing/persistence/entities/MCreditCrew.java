@@ -1,8 +1,12 @@
 package dk.obhnothing.persistence.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
 /**
  * MCreditCrew
  */
+@Entity
 public class MCreditCrew
 {
 
@@ -10,5 +14,7 @@ public class MCreditCrew
     public Person person;
     public Movie movie;
     public String job;
+    /* RELATIONS */
+    @ManyToOne public Set<Person> person;
 
 }

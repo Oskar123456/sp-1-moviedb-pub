@@ -1,8 +1,16 @@
 package dk.obhnothing.persistence.entities;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKey;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 /**
  * Movie
@@ -11,7 +19,7 @@ import jakarta.persistence.Entity;
 public class Movie
 {
 
-    public Integer id;
+    @Id @GeneratedValue public Integer id;
     public Boolean adult;
     public String backdrop_path;
     public String original_language;
@@ -31,14 +39,16 @@ public class Movie
     public Double runtime;
     public String status;
     public String tagline;
-    // RELATIONS
-    public Genre[] genres;
-    public MKeyword[] keywords;
-    public Country[] origin_country;
-    public Language[] spoken_languages;
-    public Company[] production_companies;
-    public Country[] production_countries;
-    public MCollection belongs_to_collection;
+    /* RELATIONS */
+    @ManyToMany public Set<Genre> genres;
+    @ManyToMany public Set<MKeyword> keywords;
+    @OneToMany public Set<MCreditActor> actors;
+    @OneToMany public Set<MCreditCrew> crew;
+    @ManyToOne public Set<Country> origin_country;
+    @ManyToOne public Set<Language> spoken_languages;
+    @ManyToMany public Set<Company> production_companies;
+    @ManyToMany public Set<Country> production_countries;
+    @OneToOne public MCollection collection;
 
 }
 
