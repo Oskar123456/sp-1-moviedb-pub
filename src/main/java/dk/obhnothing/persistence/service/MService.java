@@ -177,16 +177,15 @@ public class MService
         m.status = details.status;
         m.tagline = details.tagline;
         /* RELATIONS */
-        m.genres = new HashSet<>(Arrays.stream(details.genres).map(MService::mapGenreDTOToEnt).toList());
-        //m.genres = new HashSet<>(Arrays.asList(details.genres));
-        //m.keywords = new HashSet<>(Arrays.asList(details.keywords));
-        //m.actors = new HashSet<>(Arrays.asList(details.actors));
-        //m.crew = new HashSet<>(Arrays.asList(details.crew));
-        //m.origin_country = new HashSet<>(Arrays.asList(details.origin_country));
-        //m.spoken_languages = new HashSet<>(Arrays.asList(details.spoken_languages));
-        //m.production_companies = new HashSet<>(Arrays.asList(details.production_companies));
-        //m.production_countries = new HashSet<>(Arrays.asList(details.production_countries));
-        //m.collection = new MCollection();
+        m.collection = new MCollection().withUId(details.belongs_to_collection.id);
+        m.origin_country = new HashSet<>(Arrays.stream(details.origin_country).map(g -> new Country().withUId(g)).toList());
+        m.genres = new HashSet<>(Arrays.stream(details.genres).map(g -> new Genre().withUId(g.id)).toList());
+        m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(g -> new MKeyword().withUId(g.id)).toList());
+        m.cast = new HashSet<>(Arrays.stream(details.credits.cast).map(MService::mapCreditActorDTOToEnt).toList());
+        m.crew = new HashSet<>(Arrays.stream(details.credits.crew).map(MService::mapCreditCrewDTOToEnt).toList());
+        m.spoken_languages = new HashSet<>(Arrays.stream(details.spoken_languages).map(g -> new Language().withUId(g.iso_639_1)).toList());
+        m.production_companies = new HashSet<>(Arrays.stream(details.production_companies).map(g -> new Company().withUId(g.id)).toList());
+        m.production_countries = new HashSet<>(Arrays.stream(details.production_countries).map(g -> new Country().withUId(g.iso_3166_1)).toList());
         return m;
     }
 

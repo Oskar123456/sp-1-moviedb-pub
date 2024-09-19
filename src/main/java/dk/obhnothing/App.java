@@ -13,6 +13,7 @@ import dk.obhnothing.persistence.dto.MBaseDTO;
 import dk.obhnothing.persistence.dto.MDetailsDTO;
 import dk.obhnothing.persistence.dto.PersonDTO;
 import dk.obhnothing.persistence.entities.Company;
+import dk.obhnothing.persistence.entities.Movie;
 import dk.obhnothing.persistence.service.MService;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -85,6 +86,9 @@ public class App
         System.out.println(detailsDTO.original_title);
         System.out.println(Arrays.toString(detailsDTO.keywords.keywords));
 
+        Movie m = MService.mapDTOtoEnt(detailsDTO);
+        System.out.println(m);
+
         int pId = 10859;
         PersonDTO personDTO = MService.fetchPerson(pId, apitoken);
         System.out.printf("Person details (%d):%n%n", pId);
@@ -92,6 +96,7 @@ public class App
 
         Company com = new Company().withUId(3);
         System.out.println(com);
+
 
         EMF.close();
 

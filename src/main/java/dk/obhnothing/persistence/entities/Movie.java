@@ -12,6 +12,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 
 /**
  * Movie
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Movie
 {
 
@@ -45,9 +48,9 @@ public class Movie
     /* RELATIONS */
     @ManyToMany public Set<Genre> genres;
     @ManyToMany public Set<MKeyword> keywords;
-    @OneToMany public Set<MCreditActor> actors;
-    @OneToMany public Set<MCreditCrew> crew;
-    @ManyToOne public Set<Country> origin_country;
+    @Exclude @OneToMany public Set<MCreditActor> cast;
+    @Exclude @OneToMany public Set<MCreditCrew> crew;
+    @ManyToMany public Set<Country> origin_country;
     @ManyToOne public Set<Language> spoken_languages;
     @ManyToMany public Set<Company> production_companies;
     @ManyToMany public Set<Country> production_countries;
