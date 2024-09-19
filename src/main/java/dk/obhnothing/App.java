@@ -8,13 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
-import dk.obhnothing.persistence.dto.CreditActorDTO;
-import dk.obhnothing.persistence.dto.MBaseDTO;
-import dk.obhnothing.persistence.dto.MDetailsDTO;
-import dk.obhnothing.persistence.dto.PersonDTO;
-import dk.obhnothing.persistence.entities.Company;
-import dk.obhnothing.persistence.entities.Movie;
-import dk.obhnothing.persistence.service.MService;
+import dk.obhnothing.persistence.dto.tMDBBase;
+import dk.obhnothing.persistence.dto.tMDBFullDesc;
+import dk.obhnothing.persistence.dto.tMDBPers;
+import dk.obhnothing.persistence.entities.OurDBCmp;
+import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManagerFactory;
 
 /*
@@ -68,33 +66,24 @@ public class App
         jsonMapper.findAndRegisterModules();
 
         int pages = 1;
-        MService.SearchCriteria sc = MService.SearchCriteria.builder().pageIndex(1).pageTotal(pages).build();
-        List<MBaseDTO> res = MService.fetch(sc, apitoken);
+        NetScrape.SearchCriteria sc = NetScrape.SearchCriteria.builder().pageIndex(1).pageTotal(pages).build();
+        List<tMDBBase> res = NetScrape.fetch(sc, apitoken);
         System.out.printf("Got %d in %d page(s):%n%n", res.size(), pages);
-        for (MBaseDTO mBaseDTO : res) {
+        for (tMDBBase mBaseDTO : res) {
             System.out.println(mBaseDTO.original_title);
         }
 
-        List<CreditActorDTO> creditDTOs = MService.fetchActorCreds(533535, apitoken);
-        System.out.printf("Got %d creds:%n%n", creditDTOs.size());
-        for (CreditActorDTO creditDTO : creditDTOs) {
-            System.out.println(creditDTO.name);
-        }
-
-        MDetailsDTO detailsDTO = MService.fetchDets(533535, apitoken);
+        tMDBFullDesc detailsDTO = NetScrape.fetchDets(533535, apitoken);
         System.out.printf("Details (%d credits):%n%n", detailsDTO.credits.cast.length + detailsDTO.credits.crew.length);
         System.out.println(detailsDTO.original_title);
         System.out.println(Arrays.toString(detailsDTO.keywords.keywords));
 
-        Movie m = MService.mapDTOtoEnt(detailsDTO);
-        System.out.println(m);
-
         int pId = 10859;
-        PersonDTO personDTO = MService.fetchPerson(pId, apitoken);
+        tMDBPers personDTO = NetScrape.fetchPerson(pId, apitoken);
         System.out.printf("Person details (%d):%n%n", pId);
         System.out.println(personDTO);
 
-        Company com = new Company().withUId(3);
+        OurDBCmp com = new OurDBCmp().withUId(3);
         System.out.println(com);
 
 

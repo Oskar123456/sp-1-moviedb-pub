@@ -10,23 +10,17 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Person
+ * Collection
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Person extends UniId<Person, Integer>
+public class OurDBColl extends UniId<OurDBColl, Integer>
 {
-
-    public Boolean adult;
-    public Integer gender;
     public String name;
-    public String original_name;
-    public Double popularity;
-    public String profile_path;
+    public String poster_path;
+    public String backdrop_path;
     /* RELATIONS */
-    @OneToMany public Set<MCreditCrew> crewsin;
-    @OneToMany public Set<MCreditActor> actsin;
-
+    @OneToMany public Set<OurDBMovie> movies;
 }

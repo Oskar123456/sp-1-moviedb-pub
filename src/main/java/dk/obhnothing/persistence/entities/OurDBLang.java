@@ -5,22 +5,23 @@ import java.util.Set;
 import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Genre
+ * Language
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Genre extends UniId<Genre, Integer>
+public class OurDBLang extends UniId<OurDBLang, String>
 {
-
+    public String english_name;
     public String name;
     /* RELATIONS */
-    @ManyToMany public Set<Movie> movies;
-
+    @ManyToMany public Set<OurDBMovie> moviesspoken;
+    @OneToMany public OurDBMovie moviesorig;
 }

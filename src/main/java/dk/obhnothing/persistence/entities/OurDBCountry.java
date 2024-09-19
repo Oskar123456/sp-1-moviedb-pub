@@ -17,10 +17,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class Country extends UniId<Country, String>
+public class OurDBCountry extends UniId<OurDBCountry, String>
 {
     public String name;
     /* RELATIONS */
-    @ManyToMany public Set<Movie> moviesprodin;
-    @OneToMany public Set<Movie> moviesorigin;
+    @ManyToMany public Set<OurDBMovie> moviesprodin;
+    @OneToMany public Set<OurDBMovie> moviesorigin;
 }

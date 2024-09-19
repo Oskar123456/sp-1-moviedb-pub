@@ -22,7 +22,7 @@ import lombok.ToString.Exclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Movie
+public class OurDBMovie
 {
 
     @Id @GeneratedValue public Integer id;
@@ -46,15 +46,15 @@ public class Movie
     public String status;
     public String tagline;
     /* RELATIONS */
-    @ManyToMany public Set<Genre> genres;
-    @ManyToMany public Set<MKeyword> keywords;
-    @Exclude @OneToMany public Set<MCreditActor> cast;
-    @Exclude @OneToMany public Set<MCreditCrew> crew;
-    @ManyToMany public Set<Country> origin_country;
-    @ManyToOne public Set<Language> spoken_languages;
-    @ManyToMany public Set<Company> production_companies;
-    @ManyToMany public Set<Country> production_countries;
-    @OneToOne public MCollection collection;
+    @ManyToMany public Set<OurDBGenre> genres;
+    @ManyToMany public Set<OurDBKeyword> keywords;
+    @Exclude @OneToMany public Set<OurDBCast> cast;
+    @Exclude @OneToMany public Set<OurDBCrew> crew;
+    @ManyToMany public Set<OurDBCountry> origin_country;
+    @ManyToOne public Set<OurDBLang> spoken_languages;
+    @ManyToMany public Set<OurDBCmp> production_companies;
+    @ManyToMany public Set<OurDBCountry> production_countries;
+    @OneToOne public OurDBColl collection;
 
 }
 

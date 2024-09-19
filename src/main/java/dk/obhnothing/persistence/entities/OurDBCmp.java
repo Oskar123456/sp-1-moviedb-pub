@@ -5,22 +5,34 @@ import java.util.Set;
 import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.ManyToOne;
 import lombok.ToString;
 
 /**
- * MKeyword
+ * Company
  */
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString(callSuper = true)
-public class MKeyword extends UniId<MKeyword, Integer>
+public class OurDBCmp extends UniId<OurDBCmp, Integer>
 {
-
+    public String logo_path;
     public String name;
     /* RELATIONS */
-    @ManyToMany public Set<Movie> movies;
-
+    @ManyToMany public Set<OurDBMovie> movies;
+    @ManyToOne public OurDBCountry origin_country;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

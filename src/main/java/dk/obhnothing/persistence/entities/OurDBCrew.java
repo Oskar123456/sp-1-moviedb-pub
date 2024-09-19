@@ -9,20 +9,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * MCredit
+ * MCreditCrew
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class MCreditActor
+public class OurDBCrew
 {
 
     @Id @GeneratedValue public Integer id;
-    public Integer order;
-    public String character;
+    public String job;
     /* RELATIONS */
-    @ManyToOne public Person person;
-    @ManyToOne public Movie movie;
+    @ManyToOne public OurDBPers person;
+    @ManyToOne public OurDBMovie movie;
 
 }

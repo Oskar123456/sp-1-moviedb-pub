@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
  * MDetailsDTO
  */
 @EqualsAndHashCode
-public class tMDBRoot
+public class tMDBFullDesc
 {
     public Boolean adult;
     public String backdrop_path;
