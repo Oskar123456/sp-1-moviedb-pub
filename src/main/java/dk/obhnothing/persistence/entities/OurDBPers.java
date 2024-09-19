@@ -16,7 +16,7 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString
 public class OurDBPers
 {
     @Id @GeneratedValue public Integer id;
