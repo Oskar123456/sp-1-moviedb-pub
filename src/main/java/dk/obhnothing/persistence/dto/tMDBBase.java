@@ -2,19 +2,11 @@ package dk.obhnothing.persistence.dto;
 
 import java.time.LocalDate;
 
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 /**
- * MBaseDTO
+ * tMDBBase
  */
-@EqualsAndHashCode
-@NoArgsConstructor
-@ToString
-public class MBaseDTO
+public class tMDBBase
 {
-
       public Boolean adult;
       public String backdrop_path;
       public Integer[] genre_ids;
@@ -29,5 +21,4 @@ public class MBaseDTO
       public Boolean video;
       public Double vote_average;
       public Integer vote_count;
-
 }

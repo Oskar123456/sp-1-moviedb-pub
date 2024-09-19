@@ -2,17 +2,11 @@ package dk.obhnothing.persistence.dto;
 
 import java.time.LocalDate;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- * PersonDTO
+ * tMDBPers
  */
-@EqualsAndHashCode
-@ToString
-public class PersonDTO
+public class tMDBPers
 {
-
     public String adult;
     public String[] also_known_as;
     public String biography;
@@ -27,5 +21,4 @@ public class PersonDTO
     public String place_of_birth;
     public Double popularity;
     public String profile_path;
-
 }

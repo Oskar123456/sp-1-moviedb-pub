@@ -1,17 +1,10 @@
 package dk.obhnothing.persistence.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- * MKeywordDTO
+ * tMDBKeyword
  */
-@EqualsAndHashCode
-@ToString
-public class MKeywordDTO
+public class tMDBKeyword
 {
-
     public Integer id;
     public String name;
-
 }

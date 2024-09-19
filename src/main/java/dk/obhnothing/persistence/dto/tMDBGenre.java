@@ -1,12 +1,10 @@
 package dk.obhnothing.persistence.dto;
 
 /**
- * MGenre
+ * tMDBGenre
  */
-public class GenreDTO
+public class tMDBGenre
 {
-
     public Integer id;
     public String name;
-
 }
