@@ -11,7 +11,6 @@ import dk.obhnothing.persistence.HibernateConfig;
 import dk.obhnothing.persistence.dto.tMDBBase;
 import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.dto.tMDBPers;
-import dk.obhnothing.persistence.entities.OurDBCmp;
 import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -83,8 +82,6 @@ public class App
         System.out.printf("Person details (%d):%n%n", pId);
         System.out.println(personDTO);
 
-        OurDBCmp com = new OurDBCmp().withUId(3);
-        System.out.println(com);
 
 
         EMF.close();

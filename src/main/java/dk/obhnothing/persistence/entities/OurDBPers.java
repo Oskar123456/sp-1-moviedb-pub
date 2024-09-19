@@ -2,8 +2,9 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
-import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class OurDBPers extends UniId<OurDBPers, Integer>
+public class OurDBPers
 {
-
+    @Id @GeneratedValue public Integer id;
     public Boolean adult;
     public Integer gender;
     public String name;
@@ -28,5 +29,4 @@ public class OurDBPers extends UniId<OurDBPers, Integer>
     /* RELATIONS */
     @OneToMany public Set<OurDBCrew> crewsin;
     @OneToMany public Set<OurDBCast> actsin;
-
 }

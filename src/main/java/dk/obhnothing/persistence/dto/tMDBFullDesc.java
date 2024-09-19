@@ -2,12 +2,9 @@ package dk.obhnothing.persistence.dto;
 
 import java.time.LocalDate;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * MDetailsDTO
  */
-@EqualsAndHashCode
 public class tMDBFullDesc
 {
     public Boolean adult;
@@ -40,13 +37,11 @@ public class tMDBFullDesc
     public KeywordList keywords;
     public Credits credits;
 
-    @EqualsAndHashCode
     public static class Credits {
         public tMDBCast[] cast;
         public tMDBCrew[] crew;
     }
 
-    @EqualsAndHashCode
     public static class KeywordList {
         public tMDBKeyword[] keywords;
     }

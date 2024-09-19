@@ -2,12 +2,14 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
-import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 /**
  * Collection
@@ -15,12 +17,13 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
-public class OurDBColl extends UniId<OurDBColl, Integer>
+@ToString
+public class OurDBColl
 {
+    @Id @GeneratedValue public Integer id;
     public String name;
     public String poster_path;
     public String backdrop_path;
     /* RELATIONS */
-    @OneToMany public Set<OurDBMovie> movies;
+    @Exclude @OneToMany public Set<OurDBMovie> movies;
 }

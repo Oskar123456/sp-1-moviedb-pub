@@ -6,30 +6,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dk.obhnothing.persistence.dto.CreditActorDTO;
-import dk.obhnothing.persistence.dto.CreditCrewDTO;
-import dk.obhnothing.persistence.dto.GenreDTO;
-import dk.obhnothing.persistence.dto.MDetailsDTO;
-import dk.obhnothing.persistence.dto.MKeywordDTO;
 import dk.obhnothing.persistence.dto.tMDBBase;
 import dk.obhnothing.persistence.dto.tMDBBaseLst;
 import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.dto.tMDBPers;
-import dk.obhnothing.persistence.entities.OurDBCmp;
-import dk.obhnothing.persistence.entities.OurDBCountry;
-import dk.obhnothing.persistence.entities.OurDBGenre;
-import dk.obhnothing.persistence.entities.OurDBLang;
-import dk.obhnothing.persistence.entities.OurDBColl;
-import dk.obhnothing.persistence.entities.OurDBCast;
-import dk.obhnothing.persistence.entities.OurDBCrew;
-import dk.obhnothing.persistence.entities.OurDBKeyword;
-import dk.obhnothing.persistence.entities.OurDBMovie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -118,54 +102,6 @@ public class NetScrape
             System.err.println(e.getMessage());
             return null;
         }
-    }
-
-    public static OurDBCast mapCreditActorDTOToEnt(CreditActorDTO c) { return new OurDBCast(c.id, c.order, c.character, null, null); }
-    public static OurDBCrew mapCreditCrewDTOToEnt(CreditCrewDTO c) { return new OurDBCrew(c.id, c.job, null, null); }
-    public static OurDBGenre mapGenreDTOToEnt(GenreDTO g) { return new OurDBGenre().withUId(g.id); }
-    public static OurDBKeyword mapKeywordDTOToEnt(MKeywordDTO k) { return new OurDBKeyword().withUId(k.id); }
-    public static OurDBLang mapLanguageDTOToEnt(MDetailsDTO.SpokenLanguage l) { return new OurDBLang().withUId(l.iso_639_1); }
-    public static OurDBCountry mapCountryDTOToEnt(MDetailsDTO.ProductionCountry c) { return new OurDBCountry().withUId(c.iso_3166_1); }
-    public static OurDBCmp mapCompanyDTOToEnt(MDetailsDTO.ProductionCompany c) { return new OurDBCmp().withUId(c.id); }
-    public static OurDBColl mapCollectionDTOToEnt(MDetailsDTO.Collection c) { return new OurDBColl().withUId(c.id); }
-
-    public static OurDBMovie mapDTOtoEnt(MDetailsDTO details)
-    {
-        OurDBMovie m = new OurDBMovie();
-        m.adult = details.adult;
-        m.backdrop_path = details.backdrop_path;
-        m.original_language = details.original_language;
-        m.original_title = details.original_title;
-        m.overview = details.overview;
-        m.popularity = details.popularity;
-        m.poster_path = details.poster_path;
-        m.release_date = details.release_date;
-        m.title = details.title;
-        m.video = details.video;
-        m.vote_average = details.vote_average;
-        m.vote_count = details.vote_count;
-        m.budget = details.budget;
-        m.homepage = details.homepage;
-        m.imdb_id = details.imdb_id;
-        m.revenue = details.revenue;
-        m.runtime = details.runtime;
-        m.status = details.status;
-        m.tagline = details.tagline;
-        /* RELATIONS */
-        m.collection = new OurDBColl().withUId(details.belongs_to_collection.id);
-        m.origin_country = new HashSet<>(Arrays.stream(details.origin_country).map(g -> new OurDBCountry().withUId(g)).toList());
-        m.genres = new HashSet<>(Arrays.stream(details.genres).map(g -> new OurDBGenre().withUId(g.id)).toList());
-        m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(g -> new OurDBKeyword().withUId(g.id)).toList());
-        m.cast = new HashSet<>(Arrays.stream(details.credits.cast).map(NetScrape::mapCreditActorDTOToEnt).toList());
-        m.crew = new HashSet<>(Arrays.stream(details.credits.crew).map(NetScrape::mapCreditCrewDTOToEnt).toList());
-        m.spoken_languages = new HashSet<>(Arrays.stream(details.spoken_languages).map(g -> new OurDBLang().withUId(g.iso_639_1)).toList());
-        m.production_companies = new HashSet<>(Arrays.stream(details.production_companies).map(g -> new OurDBCmp().withUId(g.id)).toList());
-        m.production_countries = new HashSet<>(Arrays.stream(details.production_countries).map(g -> new OurDBCountry().withUId(g.iso_3166_1)).toList());
-        return m;
-    }
-
-    public static void storeMovie()
-    {
     }
 
     private static URI buildURI(SearchCriteria sc)

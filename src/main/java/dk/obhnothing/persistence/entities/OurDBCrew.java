@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 /**
  * MCreditCrew
@@ -14,14 +15,12 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString
 public class OurDBCrew
 {
-
     @Id @GeneratedValue public Integer id;
     public String job;
     /* RELATIONS */
-    @ManyToOne public OurDBPers person;
-    @ManyToOne public OurDBMovie movie;
-
+    @Exclude @ManyToOne public OurDBPers person;
+    @Exclude @ManyToOne public OurDBMovie movie;
 }

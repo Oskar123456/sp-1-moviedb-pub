@@ -24,7 +24,6 @@ import lombok.ToString.Exclude;
 @ToString
 public class OurDBMovie
 {
-
     @Id @GeneratedValue public Integer id;
     public Boolean adult;
     public String backdrop_path;
@@ -55,7 +54,6 @@ public class OurDBMovie
     @ManyToMany public Set<OurDBCmp> production_companies;
     @ManyToMany public Set<OurDBCountry> production_countries;
     @OneToOne public OurDBColl collection;
-
 }
 
 

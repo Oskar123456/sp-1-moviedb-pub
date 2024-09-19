@@ -2,13 +2,17 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import org.hibernate.annotations.NaturalId;
+
 import dk.obhnothing.persistence.UniId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 /**
  * Country
@@ -16,11 +20,12 @@ import lombok.ToString;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString
 public class OurDBCountry extends UniId<OurDBCountry, String>
 {
+    @Id @NaturalId public String iso_3166_1;
     public String name;
     /* RELATIONS */
-    @ManyToMany public Set<OurDBMovie> moviesprodin;
-    @OneToMany public Set<OurDBMovie> moviesorigin;
+    @Exclude @ManyToMany public Set<OurDBMovie> moviesprodin;
+    @Exclude @OneToMany public Set<OurDBMovie> moviesorigin;
 }
