@@ -4,11 +4,13 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
+import dk.obhnothing.persistence.enums.OurDBStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -26,8 +28,8 @@ import lombok.ToString.Exclude;
 public class OurDBMovie
 {
     @Id @GeneratedValue public Integer id;
+    public Integer tmdb_id;
     public String backdrop_path;
-    public String original_language;
     public String original_title;
     public String overview;
     public Double popularity;
@@ -40,17 +42,19 @@ public class OurDBMovie
     public String homepage;
     public Double revenue;
     public Duration runtime;
-    public String status;
     public String tagline;
+    @Enumerated(EnumType.STRING) public OurDBStatus status;
+    /* ISO 2-letter codes*/
+    public String original_language_iso_639_1;
+    public Set<String> spoken_languages_iso_639_1;
+    public Set<String> origin_country_iso_3166_1;
+    public Set<String> production_countries_iso_3166_1;
     /* RELATIONS */
     @ManyToMany public Set<OurDBGenre> genres;
     @ManyToMany public Set<OurDBKeyword> keywords;
     @Exclude @OneToMany public Set<OurDBCast> cast;
     @Exclude @OneToMany public Set<OurDBCrew> crew;
-    @ManyToMany public Set<OurDBCountry> origin_country;
-    @ManyToOne public Set<OurDBLang> spoken_languages;
     @ManyToMany public Set<OurDBCmp> production_companies;
-    @ManyToMany public Set<OurDBCountry> production_countries;
     @OneToOne public OurDBColl collection;
 }
 

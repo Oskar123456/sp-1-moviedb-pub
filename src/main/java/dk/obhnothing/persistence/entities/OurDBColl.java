@@ -21,6 +21,7 @@ import lombok.ToString.Exclude;
 public class OurDBColl
 {
     @Id @GeneratedValue public Integer id;
+    public Integer tmdb_id;
     public String name;
     public String poster_path;
     public String backdrop_path;

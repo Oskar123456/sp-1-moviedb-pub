@@ -1,5 +1,6 @@
 package dk.obhnothing.persistence.entities;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 /**
  * Person
@@ -20,13 +22,21 @@ import lombok.ToString;
 public class OurDBPers
 {
     @Id @GeneratedValue public Integer id;
-    public Boolean adult;
+    public Integer tmdb_id;
+    public String adult;
+    public String[] also_known_as;
+    public String biography;
+    public LocalDate birthday;
+    public LocalDate deathday;
     public Integer gender;
+    public String homepage;
+    public String imdb_id;
+    public String known_for_department;
     public String name;
-    public String original_name;
+    public String place_of_birth;
     public Double popularity;
     public String profile_path;
     /* RELATIONS */
-    @OneToMany public Set<OurDBCrew> crewsin;
-    @OneToMany public Set<OurDBCast> actsin;
+    @Exclude @OneToMany public Set<OurDBCast> acts_in;
+    @Exclude @OneToMany public Set<OurDBCrew> crews_in;
 }

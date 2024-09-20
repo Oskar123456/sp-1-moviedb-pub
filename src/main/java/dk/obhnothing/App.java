@@ -1,17 +1,11 @@
 package dk.obhnothing;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
-import dk.obhnothing.persistence.dto.tMDBBase;
-import dk.obhnothing.persistence.dto.tMDBFullDesc;
-import dk.obhnothing.persistence.dto.tMDBPers;
-import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManagerFactory;
 
 /*
@@ -63,24 +57,6 @@ public class App
 
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
-
-        int pages = 1;
-        NetScrape.SearchCriteria sc = NetScrape.SearchCriteria.builder().pageIndex(1).pageTotal(pages).build();
-        List<tMDBBase> res = NetScrape.fetch(sc, apitoken);
-        System.out.printf("Got %d in %d page(s):%n%n", res.size(), pages);
-        for (tMDBBase mBaseDTO : res) {
-            System.out.println(mBaseDTO.original_title);
-        }
-
-        tMDBFullDesc detailsDTO = NetScrape.fetchDets(533535, apitoken);
-        System.out.printf("Details (%d credits):%n%n", detailsDTO.credits.cast.length + detailsDTO.credits.crew.length);
-        System.out.println(detailsDTO.original_title);
-        System.out.println(Arrays.toString(detailsDTO.keywords.keywords));
-
-        int pId = 10859;
-        tMDBPers personDTO = NetScrape.fetchPerson(pId, apitoken);
-        System.out.printf("Person details (%d):%n%n", pId);
-        System.out.println(personDTO);
 
 
 

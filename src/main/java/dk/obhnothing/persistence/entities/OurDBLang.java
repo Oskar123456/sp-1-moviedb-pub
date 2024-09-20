@@ -26,6 +26,6 @@ public class OurDBLang
     public String english_name;
     public String name;
     /* RELATIONS */
-    @Exclude @ManyToMany public Set<OurDBMovie> moviesspoken;
-    @Exclude @OneToMany public OurDBMovie moviesorig;
+    @Exclude @ManyToMany public Set<OurDBMovie> movies_spoken;
+    @Exclude @OneToMany public Set<OurDBMovie> movies_orig;
 }
