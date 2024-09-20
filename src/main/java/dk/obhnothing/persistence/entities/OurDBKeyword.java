@@ -2,10 +2,11 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,7 @@ import lombok.ToString.Exclude;
 @ToString
 public class OurDBKeyword
 {
-    @Id @GeneratedValue public Integer id;
-    public String name;
+    @Id @NaturalId public String name;
     /* RELATIONS */
     @JsonIgnore @Exclude @ManyToMany(mappedBy = "keywords") public Set<OurDBMovie> movies;
 }

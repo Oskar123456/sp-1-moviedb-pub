@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import dk.obhnothing.persistence.ExtId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,7 +24,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class OurDBPers extends ExtId<OurDBPers, Integer>
 {
-    @Id @GeneratedValue public Integer id;
     public String adult;
     public String[] also_known_as;
     @Column(columnDefinition="TEXT") public String biography;

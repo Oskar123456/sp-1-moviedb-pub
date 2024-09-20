@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
-import dk.obhnothing.persistence.ExtId;
 import dk.obhnothing.persistence.enums.OurDBStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,10 +29,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(callSuper = true)
-public class OurDBMovie extends ExtId<OurDBMovie, Integer>
+@EqualsAndHashCode
+public class OurDBMovie
 {
     @Id @GeneratedValue public Integer id;
+    public Integer tmdb_id;
     public String backdrop_path;
     public String original_title;
     @Column(columnDefinition="TEXT") public String overview;

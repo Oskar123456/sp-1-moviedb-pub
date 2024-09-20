@@ -1,6 +1,8 @@
 package dk.obhnothing.persistence;
 
-import jakarta.persistence.Column;
+import org.hibernate.annotations.NaturalId;
+
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.ToString;
 
@@ -11,6 +13,6 @@ import lombok.ToString;
 @ToString
 public abstract class ExtId<T, U>
 {
-    @Column(unique = true) public U ext_id;
+    @Id @NaturalId public U ext_id;
     @SuppressWarnings("unchecked") public T withUId(U extId) { this.ext_id = extId; return (T)this; }
 }

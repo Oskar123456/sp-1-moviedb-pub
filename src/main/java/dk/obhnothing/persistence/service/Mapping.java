@@ -36,7 +36,7 @@ public class Mapping
         if (cmpIn == null) {
             return null;
         }
-        return new OurDBCmp(null, cmpIn.logo_path, cmpIn.name, cmpIn.origin_country, null).withUId(cmpIn.id);
+        return new OurDBCmp(cmpIn.logo_path, cmpIn.name, cmpIn.origin_country, new HashSet<>()).withUId(cmpIn.id);
     }
     public static OurDBCountry tMDBCountry_OurDBCountry(tMDBCountry countryIn) {
         if (countryIn == null) {
@@ -48,7 +48,7 @@ public class Mapping
         if (collIn == null) {
             return null;
         }
-        return new OurDBColl(null, collIn.name, collIn.poster_path, collIn.backdrop_path, new HashSet<>()).withUId(collIn.id);
+        return new OurDBColl(collIn.name, collIn.poster_path, collIn.backdrop_path, new HashSet<>()).withUId(collIn.id);
     }
     public static OurDBLang tMDBLang_OurDBLang(tMDBLang langIn) {
         if (langIn == null) {
@@ -60,16 +60,16 @@ public class Mapping
         if (genreIn == null) {
             return null;
         }
-        return new OurDBGenre(null, genreIn.name, new HashSet<>());
+        return new OurDBGenre(genreIn.name.toLowerCase(), new HashSet<>());
     }
     public static OurDBKeyword tMDBKeyword_OurDBKeyword(tMDBKeyword keywordIn) {
         if (keywordIn == null) {
             return null;
         }
-        return new OurDBKeyword(null, keywordIn.name, new HashSet<>());
+        return new OurDBKeyword(keywordIn.name.toLowerCase(), new HashSet<>());
     }
     public static OurDBPers tMDBPers_OurDBPers(tMDBPers persIn) {
-        return new OurDBPers(null, persIn.adult, persIn.also_known_as, persIn.biography,
+        return new OurDBPers(persIn.adult, persIn.also_known_as, persIn.biography,
                 persIn.birthday, persIn.deathday, persIn.gender, persIn.homepage, persIn.imdb_id,
                 persIn.known_for_department, persIn.name, persIn.place_of_birth, persIn.popularity,
                 persIn.profile_path, new HashSet<>(), new HashSet<>()).withUId(persIn.id);
@@ -85,7 +85,8 @@ public class Mapping
     }
     public static OurDBMovie tMDBFullDesc_OurDBMovie(tMDBFullDesc details)
     {
-        OurDBMovie m = new OurDBMovie().withUId(details.id);
+        OurDBMovie m = new OurDBMovie();
+        m.tmdb_id = details.id;
         m.backdrop_path = details.backdrop_path;
         m.original_title = details.original_title;
         m.overview = details.overview;
@@ -110,14 +111,14 @@ public class Mapping
         //m.spoken_languages_iso_639_1 = (String[]) Arrays.stream(details.spoken_languages).map(l -> l.iso_639_1).toArray();
         //m.origin_country_iso_3166_1 = details.origin_country;
         //m.production_countries_iso_3166_1 = (String[]) Arrays.stream(details.production_countries).map(c -> c.iso_3166_1).toArray();
-        m.genres = new HashSet<>(Arrays.stream(details.genres).map(g -> new OurDBGenre(null, g.name, null)).toList());
-        m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(k -> new OurDBKeyword(null, k.name, null)).toList());
+        m.genres = new HashSet<>(Arrays.stream(details.genres).map(Mapping::tMDBGenre_OurDBGenre).toList());
+        m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(Mapping::tMDBKeyword_OurDBKeyword).toList());
         m.cast = new HashSet<>(Arrays.stream(details.credits.cast).
-                map(c -> new OurDBCast(null, c.order, c.character, new OurDBPers().withUId(c.id), null)).toList());
+                map(Mapping::tMDBCast_OurDBCast).toList());
         m.crew = new HashSet<>(Arrays.stream(details.credits.crew).
-                map(c -> new OurDBCrew(null, c.job, new OurDBPers().withUId(c.id), null)).toList());
+                map(Mapping::tMDBCrew_OurDBCrew).toList());
         m.production_companies = new HashSet<>(Arrays.stream(details.production_companies).
-                map(c -> new OurDBCmp(null, c.logo_path, c.name, c.origin_country, null).withUId(c.id)).toList());
+                map(Mapping::tMDBCmp_OurDBCmp).toList());
         return m;
     }
 }

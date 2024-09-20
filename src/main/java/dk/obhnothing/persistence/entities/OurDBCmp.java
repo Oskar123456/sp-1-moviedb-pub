@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import dk.obhnothing.persistence.ExtId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,7 +21,6 @@ import lombok.ToString.Exclude;
 @EqualsAndHashCode(callSuper = true)
 public class OurDBCmp extends ExtId<OurDBCmp, Integer>
 {
-    @Id @GeneratedValue public Integer id;
     public String logo_path;
     public String name;
     public String origin_country_iso_3166_1;
