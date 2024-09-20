@@ -110,6 +110,7 @@ public class OurDB
                 for (OurDBCast c : m.cast) {
                     if (em.find(OurDBPers.class, c.person.ext_id) == null)
                         em.persist(Mapping.tMDBPers_OurDBPers(NetScrape.fetchPerson(c.person.ext_id)));
+                    c.movie = m;
                     em.persist(c);
                 }
 
