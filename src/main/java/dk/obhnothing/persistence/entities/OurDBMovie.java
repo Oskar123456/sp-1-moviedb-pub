@@ -33,7 +33,7 @@ import lombok.ToString;
 public class OurDBMovie
 {
     @Id @GeneratedValue public Integer id;
-    public Integer tmdb_id;
+    @Column(unique = true) public Integer tmdb_id;
     public String backdrop_path;
     public String original_title;
     @Column(columnDefinition="TEXT") public String overview;
@@ -55,11 +55,11 @@ public class OurDBMovie
     @ElementCollection() public Set<String> origin_country_iso_3166_1;
     @ElementCollection() public Set<String> production_countries_iso_3166_1;
     /* RELATIONS */
-    @ManyToMany() @JoinTable(name = "OurDBMovie_OurDBGenre") public Set<OurDBGenre> genres;
-    @ManyToMany() @JoinTable(name = "OurDBMovie_OurDBKeyword") public Set<OurDBKeyword> keywords;
+    @ManyToMany() public Set<OurDBGenre> genres;
+    @ManyToMany() public Set<OurDBKeyword> keywords;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie") public Set<OurDBCast> cast;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie") public Set<OurDBCrew> crew;
-    @ManyToMany() @JoinTable(name = "OurDBMovie_OurDBCmp") public Set<OurDBCmp> production_companies;
+    @ManyToMany() public Set<OurDBCmp> production_companies;
     @ManyToOne() public OurDBColl collection;
 }
 

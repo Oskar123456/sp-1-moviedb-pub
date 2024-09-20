@@ -6,6 +6,9 @@ import dk.obhnothing.persistence.entities.OurDBColl;
 import dk.obhnothing.persistence.entities.OurDBGenre;
 import dk.obhnothing.persistence.entities.OurDBKeyword;
 import dk.obhnothing.persistence.entities.OurDBMovie;
+import dk.obhnothing.persistence.entities.OurDBPers;
+import dk.obhnothing.persistence.service.Mapping;
+import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
@@ -71,7 +74,7 @@ public class OurDB
             em.getTransaction().begin();
 
             try {
-                OurDBMovie res = em.createQuery("select m from OurDBMovie m where ext_id = ?1", OurDBMovie.class).
+                OurDBMovie res = em.createQuery("select m from OurDBMovie m where tmdb_id = ?1", OurDBMovie.class).
                     setParameter(1, m.tmdb_id).getSingleResult();
                 if (res != null)
                 {
@@ -89,23 +92,27 @@ public class OurDB
 
             if (m.keywords != null) {
                 for (OurDBKeyword k : m.keywords) {
-                    if (em.find(OurDBKeyword.class, k) == null)
+                    if (em.find(OurDBKeyword.class, k.name) == null)
                         em.persist(k);
                 }
             }
 
+            System.out.println("prodcmps");
             if (m.production_companies != null) {
                 for (OurDBCmp c : m.production_companies) {
-                    if (em.find(OurDBCmp.class, c) == null)
+                    if (em.find(OurDBCmp.class, c.ext_id) == null)
                         em.persist(c);
+                    System.out.printf("%d, ", c.ext_id);
                 }
             }
 
             if (m.cast != null) {
                 for (OurDBCast c : m.cast) {
-                    if (em.find(OurDBCast.class, c) == null)
-                        em.persist(c);
+                    if (em.find(OurDBPers.class, c.person.ext_id) == null)
+                        em.persist(Mapping.tMDBPers_OurDBPers(NetScrape.fetchPerson(c.person.ext_id)));
+                    em.persist(c);
                 }
+
             }
 
             if ( enableCrew && m.crew != null ) {
@@ -125,9 +132,8 @@ public class OurDB
         }
 
         catch (Exception e) {
-
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
 
         }

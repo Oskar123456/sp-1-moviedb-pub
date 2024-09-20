@@ -88,6 +88,7 @@ public class NetScrape
 
     public static List<tMDBBase> search(SearchCriteria sc)
     {
+        System.out.println("Search for " + sc.toString());
         List<tMDBBase> finalResults = new ArrayList<>();
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
@@ -98,7 +99,7 @@ public class NetScrape
                 HttpRequest request = HttpRequest.newBuilder().uri(buildURI(sc)).
                     setHeader("accept", "application/json").
                     setHeader("Authorization", "Bearer " + apiToken).GET().build();
-                //System.err.println("fetching: " + request.uri().toString());
+                System.err.println("fetching: " + request.uri().toString());
                 //System.err.println(request.headers());
                 HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
                 if (response.statusCode() != 200) {
@@ -115,6 +116,7 @@ public class NetScrape
                     if (finalResults.size() >= sc.maxResults)
                         return finalResults;
                 }
+                sc.pageIndex++;
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());

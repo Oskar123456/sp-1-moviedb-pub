@@ -27,5 +27,5 @@ public class OurDBColl extends ExtId<OurDBColl, Integer>
     public String poster_path;
     public String backdrop_path;
     /* RELATIONS */
-    @JsonIgnore @Exclude @OneToMany(mappedBy = "collection") public Set<OurDBMovie> movies;
+    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @OneToMany(mappedBy = "collection") public Set<OurDBMovie> movies;
 }

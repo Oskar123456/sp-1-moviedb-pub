@@ -25,7 +25,7 @@ public class OurDBCmp extends ExtId<OurDBCmp, Integer>
     public String name;
     public String origin_country_iso_3166_1;
     /* RELATIONS */
-    @JsonIgnore @Exclude @ManyToMany(mappedBy = "production_companies") public Set<OurDBMovie> movies;
+    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @ManyToMany public Set<OurDBMovie> movies;
 }
 
 

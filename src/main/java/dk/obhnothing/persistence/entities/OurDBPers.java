@@ -38,6 +38,6 @@ public class OurDBPers extends ExtId<OurDBPers, Integer>
     public Double popularity;
     public String profile_path;
     /* RELATIONS */
-    @JsonIgnore @OneToMany(mappedBy = "person") public Set<OurDBCast> acts_in;
-    @JsonIgnore @OneToMany(mappedBy = "person") public Set<OurDBCrew> crews_in;
+    @JsonIgnore @lombok.EqualsAndHashCode.Exclude @OneToMany(mappedBy = "person") public Set<OurDBCast> acts_in;
+    @JsonIgnore @lombok.EqualsAndHashCode.Exclude @OneToMany(mappedBy = "person") public Set<OurDBCrew> crews_in;
 }

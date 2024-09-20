@@ -23,6 +23,6 @@ public class OurDBCrew
     @Id @GeneratedValue public Integer id;
     public String job;
     /* RELATIONS */
-    @JsonIgnore @Exclude @ManyToOne public OurDBPers person;
-    @JsonIgnore @Exclude @ManyToOne public OurDBMovie movie;
+    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @ManyToOne public OurDBPers person;
+    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @ManyToOne public OurDBMovie movie;
 }

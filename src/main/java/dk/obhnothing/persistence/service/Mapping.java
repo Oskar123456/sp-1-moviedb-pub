@@ -78,7 +78,7 @@ public class Mapping
         return new OurDBCrew(null, crewIn.job, null, null);
     }
     public static OurDBCast tMDBCast_OurDBCast(tMDBCast castIn) {
-        return new OurDBCast(null, castIn.order, castIn.character, null, null);
+        return new OurDBCast(null, castIn.order, castIn.character, new OurDBPers().withUId(castIn.id), null);
     }
     public static OurDBStatus tMDBStatus_OurDBStatus(String status) {
         if (status.toLowerCase().equals("released")) return OurDBStatus.Released; return OurDBStatus.Unknown;
@@ -108,17 +108,24 @@ public class Mapping
         m.spoken_languages_iso_639_1 = new HashSet<>(Arrays.stream(details.spoken_languages).map(l -> l.iso_639_1).toList());
         m.origin_country_iso_3166_1 = new HashSet<>(Arrays.stream(details.origin_country).toList());
         m.production_countries_iso_3166_1 = new HashSet<>(Arrays.stream(details.production_countries).map(c -> c.iso_3166_1).toList());
-        //m.spoken_languages_iso_639_1 = (String[]) Arrays.stream(details.spoken_languages).map(l -> l.iso_639_1).toArray();
-        //m.origin_country_iso_3166_1 = details.origin_country;
-        //m.production_countries_iso_3166_1 = (String[]) Arrays.stream(details.production_countries).map(c -> c.iso_3166_1).toArray();
         m.genres = new HashSet<>(Arrays.stream(details.genres).map(Mapping::tMDBGenre_OurDBGenre).toList());
         m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(Mapping::tMDBKeyword_OurDBKeyword).toList());
-        m.cast = new HashSet<>(Arrays.stream(details.credits.cast).
-                map(Mapping::tMDBCast_OurDBCast).toList());
-        m.crew = new HashSet<>(Arrays.stream(details.credits.crew).
-                map(Mapping::tMDBCrew_OurDBCrew).toList());
-        m.production_companies = new HashSet<>(Arrays.stream(details.production_companies).
-                map(Mapping::tMDBCmp_OurDBCmp).toList());
+        m.cast = new HashSet<>(Arrays.stream(details.credits.cast).map(Mapping::tMDBCast_OurDBCast).toList());
+        m.crew = new HashSet<>(Arrays.stream(details.credits.crew).map(Mapping::tMDBCrew_OurDBCrew).toList());
+        /* stupid */
+        m.production_companies = new HashSet<>();
+        for (tMDBCmp c : details.production_companies) {
+            boolean exists = false;
+            for (OurDBCmp oc : m.production_companies) {
+                if (c.id.equals(oc.ext_id)) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+                m.production_companies.add(tMDBCmp_OurDBCmp(c));
+        }
+
         return m;
     }
 }
