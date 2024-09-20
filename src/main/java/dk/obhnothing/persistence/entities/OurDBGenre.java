@@ -2,6 +2,8 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,5 +25,5 @@ public class OurDBGenre
     @Id @GeneratedValue public Integer id;
     public String name;
     /* RELATIONS */
-    @Exclude @ManyToMany public Set<OurDBMovie> movies;
+    @JsonIgnore @Exclude @ManyToMany(mappedBy = "genres") public Set<OurDBMovie> movies;
 }

@@ -33,21 +33,39 @@ public class Mapping
 {
     /* null values are left for the database layer to fill in */
     public static OurDBCmp tMDBCmp_OurDBCmp(tMDBCmp cmpIn) {
+        if (cmpIn == null) {
+            return null;
+        }
         return new OurDBCmp(null, cmpIn.logo_path, cmpIn.name, cmpIn.origin_country, null).withUId(cmpIn.id);
     }
     public static OurDBCountry tMDBCountry_OurDBCountry(tMDBCountry countryIn) {
+        if (countryIn == null) {
+            return null;
+        }
         return new OurDBCountry(countryIn.iso_3166_1, countryIn.name, new HashSet<>(), new HashSet<>());
     }
     public static OurDBColl tMDBColl_OurDBColl(tMDBColl collIn) {
+        if (collIn == null) {
+            return null;
+        }
         return new OurDBColl(null, collIn.name, collIn.poster_path, collIn.backdrop_path, new HashSet<>()).withUId(collIn.id);
     }
     public static OurDBLang tMDBLang_OurDBLang(tMDBLang langIn) {
+        if (langIn == null) {
+            return null;
+        }
         return new OurDBLang(langIn.iso_639_1, langIn.english_name, langIn.name, new HashSet<>(), new HashSet<>());
     }
     public static OurDBGenre tMDBGenre_OurDBGenre(tMDBGenre genreIn) {
+        if (genreIn == null) {
+            return null;
+        }
         return new OurDBGenre(null, genreIn.name, new HashSet<>());
     }
     public static OurDBKeyword tMDBKeyword_OurDBKeyword(tMDBKeyword keywordIn) {
+        if (keywordIn == null) {
+            return null;
+        }
         return new OurDBKeyword(null, keywordIn.name, new HashSet<>());
     }
     public static OurDBPers tMDBPers_OurDBPers(tMDBPers persIn) {
@@ -89,6 +107,9 @@ public class Mapping
         m.spoken_languages_iso_639_1 = new HashSet<>(Arrays.stream(details.spoken_languages).map(l -> l.iso_639_1).toList());
         m.origin_country_iso_3166_1 = new HashSet<>(Arrays.stream(details.origin_country).toList());
         m.production_countries_iso_3166_1 = new HashSet<>(Arrays.stream(details.production_countries).map(c -> c.iso_3166_1).toList());
+        //m.spoken_languages_iso_639_1 = (String[]) Arrays.stream(details.spoken_languages).map(l -> l.iso_639_1).toArray();
+        //m.origin_country_iso_3166_1 = details.origin_country;
+        //m.production_countries_iso_3166_1 = (String[]) Arrays.stream(details.production_countries).map(c -> c.iso_3166_1).toArray();
         m.genres = new HashSet<>(Arrays.stream(details.genres).map(g -> new OurDBGenre(null, g.name, null)).toList());
         m.keywords = new HashSet<>(Arrays.stream(details.keywords.keywords).map(k -> new OurDBKeyword(null, k.name, null)).toList());
         m.cast = new HashSet<>(Arrays.stream(details.credits.cast).

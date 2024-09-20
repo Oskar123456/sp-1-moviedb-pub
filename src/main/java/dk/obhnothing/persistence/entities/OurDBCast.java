@@ -1,5 +1,7 @@
 package dk.obhnothing.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,9 +21,9 @@ import lombok.ToString.Exclude;
 public class OurDBCast
 {
     @Id @GeneratedValue public Integer id;
-    public Integer order;
+    public Integer order_of_appearance;
     public String character;
     /* RELATIONS */
-    @Exclude @ManyToOne public OurDBPers person;
-    @Exclude @ManyToOne public OurDBMovie movie;
+    @JsonIgnore @Exclude @ManyToOne public OurDBPers person;
+    @JsonIgnore @Exclude @ManyToOne public OurDBMovie movie;
 }

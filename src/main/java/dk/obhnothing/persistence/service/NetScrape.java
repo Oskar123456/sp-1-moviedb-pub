@@ -30,8 +30,10 @@ public class NetScrape
 {
 
     private static String baseurl = "https://api.themoviedb.org/3/";
+    private static String apiToken;
+    public static void Init(String apitoken) { apiToken = apitoken; }
 
-    public static List<tMDBBase> fetch(SearchCriteria sc, String apiToken)
+    public static List<tMDBBase> fetch(SearchCriteria sc)
     {
         List<tMDBBase> finalResults = new ArrayList<>();
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -59,7 +61,7 @@ public class NetScrape
         return finalResults;
     }
 
-    public static tMDBFullDesc fetchDets(Integer mId, String apiToken)
+    public static tMDBFullDesc fetchDets(Integer mId)
     {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
@@ -82,7 +84,7 @@ public class NetScrape
         }
     }
 
-    public static tMDBPers fetchPerson(Integer pId, String apiToken)
+    public static tMDBPers fetchPerson(Integer pId)
     {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();

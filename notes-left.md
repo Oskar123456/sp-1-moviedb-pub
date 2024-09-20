@@ -1,7 +1,6 @@
 # TODO
 
-- fetch rest of info like Details & make
-  the thing for DB
+- fix relations crew cast mappedby
 
 # notes
 

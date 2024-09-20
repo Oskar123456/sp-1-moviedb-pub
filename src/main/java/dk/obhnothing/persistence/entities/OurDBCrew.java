@@ -1,5 +1,7 @@
 package dk.obhnothing.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,6 +23,6 @@ public class OurDBCrew
     @Id @GeneratedValue public Integer id;
     public String job;
     /* RELATIONS */
-    @Exclude @ManyToOne public OurDBPers person;
-    @Exclude @ManyToOne public OurDBMovie movie;
+    @JsonIgnore @Exclude @ManyToOne public OurDBPers person;
+    @JsonIgnore @Exclude @ManyToOne public OurDBMovie movie;
 }

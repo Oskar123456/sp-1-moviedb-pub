@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
+import dk.obhnothing.persistence.dao.OurDB;
 import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.entities.OurDBMovie;
 import dk.obhnothing.persistence.service.Mapping;
@@ -37,6 +38,9 @@ public class App
         HibernateConfig.Init(HibernateConfig.Mode.DEV, dbname, dbuser, dbpw);
         EMF = HibernateConfig.getEntityManagerFactory();
 
+        NetScrape.Init(apitoken);
+        OurDB.Init(EMF);
+
         System.out.println("Working...");
 
         Locale loc = Locale.US;
@@ -64,12 +68,27 @@ public class App
         jsonMapper.findAndRegisterModules();
         jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        tMDBFullDesc deadpool = NetScrape.fetchDets(533535, apitoken);
+        tMDBFullDesc deadpool = NetScrape.fetchDets(533535);
         OurDBMovie deadpoolOur = Mapping.tMDBFullDesc_OurDBMovie(deadpool);
 
-        System.out.println(deadpool);
-        System.out.println(jsonMapper.writeValueAsString(deadpoolOur));
+        System.out.println("CREATING");
+        System.out.println("CREATING");
+        System.out.println("CREATING");
 
+        OurDB.ourDBMovie_Create(deadpoolOur);
+
+        System.out.println("FETCHING FROM DB");
+        System.out.println("FETCHING FROM DB");
+        System.out.println("FETCHING FROM DB");
+
+        OurDBMovie fromDB = OurDB.ourDBMovie_findById(533535);
+
+        System.out.println("PRINTING");
+        System.out.println("PRINTING");
+        System.out.println("PRINTING");
+
+        fromDB = OurDB.ourDBMovie_touch(fromDB);
+        System.out.println(jsonMapper.writeValueAsString(fromDB));
 
         EMF.close();
 

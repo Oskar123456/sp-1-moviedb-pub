@@ -1,5 +1,6 @@
 package dk.obhnothing.persistence;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.ToString;
 
@@ -10,6 +11,6 @@ import lombok.ToString;
 @ToString
 public abstract class ExtId<T, U>
 {
-    public U ext_id;
+    @Column(unique = true) public U ext_id;
     @SuppressWarnings("unchecked") public T withUId(U extId) { this.ext_id = extId; return (T)this; }
 }
