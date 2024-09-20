@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
 
-import dk.obhnothing.persistence.UniId;
+import dk.obhnothing.persistence.ExtId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -21,7 +21,7 @@ import lombok.ToString.Exclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OurDBCountry extends UniId<OurDBCountry, String>
+public class OurDBCountry extends ExtId<OurDBCountry, String>
 {
     @Id @NaturalId public String iso_3166_1;
     public String name;

@@ -3,9 +3,14 @@ package dk.obhnothing;
 import java.util.Locale;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.javafaker.Faker;
 
 import dk.obhnothing.persistence.HibernateConfig;
+import dk.obhnothing.persistence.dto.tMDBFullDesc;
+import dk.obhnothing.persistence.entities.OurDBMovie;
+import dk.obhnothing.persistence.service.Mapping;
+import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManagerFactory;
 
 /*
@@ -57,7 +62,13 @@ public class App
 
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
+        jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
+        tMDBFullDesc deadpool = NetScrape.fetchDets(533535, apitoken);
+        OurDBMovie deadpoolOur = Mapping.tMDBFullDesc_OurDBMovie(deadpool);
+
+        System.out.println(deadpool);
+        System.out.println(jsonMapper.writeValueAsString(deadpoolOur));
 
 
         EMF.close();

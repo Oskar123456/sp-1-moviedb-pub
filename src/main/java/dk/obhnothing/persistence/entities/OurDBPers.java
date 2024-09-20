@@ -3,6 +3,7 @@ package dk.obhnothing.persistence.entities;
 import java.time.LocalDate;
 import java.util.Set;
 
+import dk.obhnothing.persistence.ExtId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,10 +20,9 @@ import lombok.ToString.Exclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OurDBPers
+public class OurDBPers extends ExtId<OurDBPers, Integer>
 {
     @Id @GeneratedValue public Integer id;
-    public Integer tmdb_id;
     public String adult;
     public String[] also_known_as;
     public String biography;

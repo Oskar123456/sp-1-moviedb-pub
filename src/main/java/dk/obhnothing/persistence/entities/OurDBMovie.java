@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
+import dk.obhnothing.persistence.ExtId;
 import dk.obhnothing.persistence.enums.OurDBStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +17,6 @@ import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.ToString.Exclude;
 
 /**
  * Movie
@@ -25,10 +25,9 @@ import lombok.ToString.Exclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OurDBMovie
+public class OurDBMovie extends ExtId<OurDBMovie, Integer>
 {
     @Id @GeneratedValue public Integer id;
-    public Integer tmdb_id;
     public String backdrop_path;
     public String original_title;
     public String overview;
@@ -52,8 +51,8 @@ public class OurDBMovie
     /* RELATIONS */
     @ManyToMany public Set<OurDBGenre> genres;
     @ManyToMany public Set<OurDBKeyword> keywords;
-    @Exclude @OneToMany public Set<OurDBCast> cast;
-    @Exclude @OneToMany public Set<OurDBCrew> crew;
+    @OneToMany public Set<OurDBCast> cast;
+    @OneToMany public Set<OurDBCrew> crew;
     @ManyToMany public Set<OurDBCmp> production_companies;
     @OneToOne public OurDBColl collection;
 }

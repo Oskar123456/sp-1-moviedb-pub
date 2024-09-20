@@ -2,6 +2,7 @@ package dk.obhnothing.persistence.entities;
 
 import java.util.Set;
 
+import dk.obhnothing.persistence.ExtId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,10 +19,9 @@ import lombok.ToString.Exclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OurDBColl
+public class OurDBColl extends ExtId<OurDBColl, Integer>
 {
     @Id @GeneratedValue public Integer id;
-    public Integer tmdb_id;
     public String name;
     public String poster_path;
     public String backdrop_path;
