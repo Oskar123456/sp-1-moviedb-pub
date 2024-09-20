@@ -91,10 +91,8 @@ public class App
         new NetScrape.SearchCriteria();
         int res = NetScrape.searchAndStore(
                 SearchCriteria.builder().
-                maxResults(25).originCountry("DK").build());
+                maxResults(53).originCountry("DK").build());
 
-        System.out.println(res);
-        System.out.println(res);
         System.out.println(res);
         System.out.println(res);
         System.out.println(res);

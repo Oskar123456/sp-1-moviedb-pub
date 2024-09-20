@@ -1,12 +1,9 @@
 # TODO
 
-- fix relations crew cast mappedby
+- Fix unnecesary association table
 
 # notes
 
-- fetch modifies searchCriteria argument.
--
--
 
 
 

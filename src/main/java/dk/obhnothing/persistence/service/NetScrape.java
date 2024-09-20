@@ -20,6 +20,8 @@ import dk.obhnothing.persistence.dto.tMDBBase;
 import dk.obhnothing.persistence.dto.tMDBBaseLst;
 import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.dto.tMDBPers;
+import dk.obhnothing.persistence.entities.OurDBCast;
+import dk.obhnothing.persistence.entities.OurDBMovie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -41,49 +43,57 @@ public class NetScrape
     private static String apiToken;
     public static void Init(String apitoken) { apiToken = apitoken; }
 
-    public static Integer searchAndStore(SearchCriteria criteria)
+    public static int searchAndStore(SearchCriteria criteria)
     {
-        int nCores = 1; // Runtime.getRuntime().availableProcessors();
+        int nCores = Runtime.getRuntime().availableProcessors();
         ExecutorService jobqueue = Executors.newFixedThreadPool(nCores);
         int nPages = (criteria.maxResults + pagesize - 1) / pagesize;
         int nPagesPerThread = (nPages + nCores - 1) / nCores;
         System.out.printf("ncores: %d, nPages: %d, nPagesPerThread: %d%n%n%n", nCores, nPages, nPagesPerThread);
         System.out.println(criteria);
 
-        List<Future<Integer>> results = new ArrayList<>();
+        List<Future<List<OurDBMovie>>> results = new ArrayList<>();
         for (int i = 0; i < nCores; i++) {
             SearchCriteria c = new SearchCriteria(criteria);
             c.pageIndex = i * nPagesPerThread + 1;
             c.maxResults = Math.min(nPagesPerThread * pagesize,
-                    c.maxResults - i * pagesize);
-            results.add(jobqueue.submit(() -> searchAndStoreN(c)));
+                    c.maxResults - i * pagesize * nPagesPerThread);
+            results.add(jobqueue.submit(() -> searchAndFetchDetails(c)));
         }
+
+        int res = 0;
         try {
             jobqueue.shutdown();
-            jobqueue.awaitTermination(60, TimeUnit.SECONDS);
-            return results.stream().map(f -> {
-                try {
-                    return f.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    return 0;
+            jobqueue.awaitTermination(10, TimeUnit.SECONDS);
+            for (Future<List<OurDBMovie>> f : results) {
+                System.out.printf("Waiting for results... (%d done)%n", res);
+                List<OurDBMovie> ms = f.get();
+                for (OurDBMovie movie : ms) {
+                    if (OurDB.ourDBMovie_Create(movie) != null)
+                        res++;
                 }
-            }).reduce(0, (Integer s, Integer i) -> Integer.sum(s, i));
+            }
         } catch (Exception e) {
-            return 0;
+            System.err.println(e.getMessage());
         }
+        return res;
     }
 
-    private static Integer searchAndStoreN(SearchCriteria criteria)
+    private static List<OurDBMovie> searchAndFetchDetails(SearchCriteria criteria)
     {
+        List<OurDBMovie> finalResults = new ArrayList<>();
         if (criteria.maxResults < 1)
-            return 0;
+            return finalResults;
         System.out.printf("thread %d: page %d, max: %d%n%n",
                 Thread.currentThread().getId(), criteria.pageIndex, criteria.maxResults);
         System.out.println(criteria);
         List<tMDBBase> baseResults = search(criteria);
         for (tMDBBase tMDBBase : baseResults)
-            OurDB.ourDBMovie_Create(Mapping.tMDBFullDesc_OurDBMovie(fetchDets(tMDBBase.id)));
-        return baseResults.size();
+            finalResults.add(Mapping.tMDBFullDesc_OurDBMovie(fetchDets(tMDBBase.id)));
+        for (OurDBMovie om : finalResults)
+            for (OurDBCast oc : om.cast)
+                oc.person = Mapping.tMDBPers_OurDBPers(fetchPerson(oc.person.ext_id));
+        return finalResults;
     }
 
     public static List<tMDBBase> search(SearchCriteria sc)
