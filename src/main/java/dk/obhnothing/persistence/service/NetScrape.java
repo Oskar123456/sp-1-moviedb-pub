@@ -5,13 +5,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,7 +21,9 @@ import dk.obhnothing.persistence.dto.tMDBBaseLst;
 import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.dto.tMDBPers;
 import dk.obhnothing.persistence.entities.OurDBCast;
+import dk.obhnothing.persistence.entities.OurDBCrew;
 import dk.obhnothing.persistence.entities.OurDBMovie;
+import dk.obhnothing.persistence.entities.OurDBPers;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -64,9 +66,8 @@ public class NetScrape
         int res = 0;
         try {
             jobqueue.shutdown();
-            jobqueue.awaitTermination(10, TimeUnit.SECONDS);
             for (Future<List<OurDBMovie>> f : results) {
-                System.out.printf("Waiting for results... (%d done)%n", res);
+                System.out.printf("Waiting for results... (%d / %d done)%n", res, criteria.maxResults);
                 List<OurDBMovie> ms = f.get();
                 for (OurDBMovie movie : ms) {
                     if (OurDB.ourDBMovie_Create(movie) != null)
@@ -76,6 +77,7 @@ public class NetScrape
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+        System.out.printf("Fetched %d / %d results...%n", res, criteria.maxResults);
         return res;
     }
 
@@ -84,21 +86,31 @@ public class NetScrape
         List<OurDBMovie> finalResults = new ArrayList<>();
         if (criteria.maxResults < 1)
             return finalResults;
-        System.out.printf("thread %d: page %d, max: %d%n%n",
-                Thread.currentThread().getId(), criteria.pageIndex, criteria.maxResults);
-        System.out.println(criteria);
+        //System.out.printf("thread %d: page %d, max: %d%n%n",
+        //      Thread.currentThread().getId(), criteria.pageIndex, criteria.maxResults);
+        //System.out.println(criteria);
         List<tMDBBase> baseResults = search(criteria);
         for (tMDBBase tMDBBase : baseResults)
             finalResults.add(Mapping.tMDBFullDesc_OurDBMovie(fetchDets(tMDBBase.id)));
-        for (OurDBMovie om : finalResults)
+        for (OurDBMovie om : finalResults) {
             for (OurDBCast oc : om.cast)
-                oc.person = Mapping.tMDBPers_OurDBPers(fetchPerson(oc.person.ext_id));
+                oc.person = fetchPerson(oc.person.ext_id);
+            /* only include directors; takes too long to fetch full crew */
+            List<OurDBCrew> toRemove = new ArrayList<>();
+            for (OurDBCrew oc : om.crew) {
+                if (oc.job.toLowerCase().equals("director"))
+                    oc.person = fetchPerson(oc.person.ext_id);
+                else
+                    toRemove.add(oc);
+            }
+            om.crew.removeAll(toRemove);
+        }
         return finalResults;
     }
 
     public static List<tMDBBase> search(SearchCriteria sc)
     {
-        System.out.println("Search for " + sc.toString());
+        //System.out.println("Search for " + sc.toString());
         List<tMDBBase> finalResults = new ArrayList<>();
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
@@ -109,23 +121,29 @@ public class NetScrape
                 HttpRequest request = HttpRequest.newBuilder().uri(buildURI(sc)).
                     setHeader("accept", "application/json").
                     setHeader("Authorization", "Bearer " + apiToken).GET().build();
-                System.err.println("fetching: " + request.uri().toString());
+                //System.err.println("fetching: " + request.uri().toString());
                 //System.err.println(request.headers());
                 HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+
                 if (response.statusCode() != 200) {
-                    //System.out.println(response.statusCode());
-                    //System.out.println(response.statusCode());
-                    //System.out.println(response.statusCode());
                     return finalResults;
                 }
 
                 String responseStr = response.body();
                 tMDBBaseLst results = jsonMapper.readValue(responseStr, tMDBBaseLst.class);
+
+                if (results.results.length < 1) {
+                    return finalResults;
+                }
+
                 for (tMDBBase tMDBBase : results.results) {
+                    if (OurDB.ourDBMovie_FindByExtId(tMDBBase.id) != null)
+                        continue;
                     finalResults.add(tMDBBase);
                     if (finalResults.size() >= sc.maxResults)
                         return finalResults;
                 }
+
                 sc.pageIndex++;
             }
         } catch (Exception e) {
@@ -157,8 +175,11 @@ public class NetScrape
         }
     }
 
-    public static tMDBPers fetchPerson(Integer pId)
+    public static OurDBPers fetchPerson(Integer pId)
     {
+        OurDBPers tryFind = null;
+        if ((tryFind = OurDB.ourDBPers_FindByExtId(pId)) != null)
+            return tryFind;
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
         HttpClient client = HttpClient.newHttpClient();
@@ -169,10 +190,10 @@ public class NetScrape
                 setHeader("accept", "application/json").
                 setHeader("Authorization", "Bearer " + apiToken).GET().build();
             //System.err.println("fetching: " + request.toString());
-            //System.err.println(request.headers());
+            //System.ern.println(request.headers());
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             String responseStr = response.body();
-            return jsonMapper.readValue(responseStr, tMDBPers.class);
+            return Mapping.tMDBPers_OurDBPers(jsonMapper.readValue(responseStr, tMDBPers.class));
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;
@@ -188,6 +209,19 @@ public class NetScrape
         uriStr += "&language=" + ((sc.language != null) ? sc.language : "en-US");
         uriStr += "&sort_by=" + sc.sortingCriteria + ((sc.sortAsc != null && sc.sortAsc) ? ".asc" : ".desc");
         uriStr += "&with_origin_country=" + ((sc.originCountry != null) ? sc.originCountry : "US");
+        DateTimeFormatter ft = DateTimeFormatter.ISO_LOCAL_DATE;
+        uriStr += "&primary_release_date.gte=" + ft.format(sc.after);
+        uriStr += "&release_date.gte=" + ft.format(sc.after);
+        uriStr += "&primary_release_date.lte=" + ft.format(sc.before);
+        uriStr += "&release_date.lte=" + ft.format(sc.before);
+
+        // ?include_adult=false
+        // &include_video=false&language=en-US
+        // &page=1
+        // &primary_release_date.gte=2020-01-01
+        // &release_date.gte=2020-01-01
+        // &sort_by=popularity.desc
+        // &with_origin_country=DK' \
         return URI.create(uriStr);
     }
 
@@ -205,6 +239,8 @@ public class NetScrape
         @Builder.Default public Boolean sortAsc = false;
         @Builder.Default public Integer pageIndex = 1;
         @Builder.Default public Integer maxResults = 1;
+        @Builder.Default public LocalDate before = LocalDate.now();
+        @Builder.Default public LocalDate after = LocalDate.now().minusYears(200);
         public SearchCriteria(SearchCriteria c) {
             includeAdult = c.includeAdult;
             includeVideo = c.includeVideo;
@@ -214,9 +250,24 @@ public class NetScrape
             sortAsc = c.sortAsc;
             pageIndex = c.pageIndex;
             maxResults = c.maxResults;
+            before = c.before;
+            after = c.after;
         }
     }
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

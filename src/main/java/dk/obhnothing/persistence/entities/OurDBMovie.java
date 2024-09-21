@@ -13,7 +13,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -51,16 +50,16 @@ public class OurDBMovie
     @Enumerated(EnumType.STRING) public OurDBStatus status;
     /* ISO 2-letter codes */
     public String original_language_iso_639_1;
-    @ElementCollection() public Set<String> spoken_languages_iso_639_1;
-    @ElementCollection() public Set<String> origin_country_iso_3166_1;
-    @ElementCollection() public Set<String> production_countries_iso_3166_1;
+    @ElementCollection public Set<String> spoken_languages_iso_639_1;
+    @ElementCollection public Set<String> origin_country_iso_3166_1;
+    @ElementCollection public Set<String> production_countries_iso_3166_1;
     /* RELATIONS */
-    @ManyToMany() public Set<OurDBGenre> genres;
-    @ManyToMany() public Set<OurDBKeyword> keywords;
+    @ManyToMany public Set<OurDBGenre> genres;
+    @ManyToMany public Set<OurDBKeyword> keywords;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie") public Set<OurDBCast> cast;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie") public Set<OurDBCrew> crew;
-    @ManyToMany() public Set<OurDBCmp> production_companies;
-    @ManyToOne() public OurDBColl collection;
+    @ManyToMany public Set<OurDBCmp> production_companies;
+    @ManyToOne public OurDBColl collection;
 }
 
 

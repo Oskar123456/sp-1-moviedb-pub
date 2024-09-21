@@ -1,6 +1,10 @@
 package dk.obhnothing;
 
+import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Random;
+
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,6 +15,19 @@ import dk.obhnothing.persistence.dao.OurDB;
 import dk.obhnothing.persistence.service.NetScrape;
 import dk.obhnothing.persistence.service.NetScrape.SearchCriteria;
 import jakarta.persistence.EntityManagerFactory;
+
+import java.util.List;
+import java.time.format.DateTimeFormatter;
+
+import dk.obhnothing.persistence.dao.OurDB;
+import dk.obhnothing.persistence.dto.tMDBBase;
+import dk.obhnothing.persistence.dto.tMDBBaseLst;
+import dk.obhnothing.persistence.dto.tMDBFullDesc;
+import dk.obhnothing.persistence.dto.tMDBPers;
+import dk.obhnothing.persistence.entities.OurDBCast;
+import dk.obhnothing.persistence.entities.OurDBCrew;
+import dk.obhnothing.persistence.entities.OurDBGenre;
+import dk.obhnothing.persistence.entities.OurDBMovie;
 
 /*
  * Web development....
@@ -49,6 +66,7 @@ public class App
                 loc = locale;
         }
         Faker nameGen = new Faker(loc);
+        Random rng = new Random();
 
         System.err.println(loc.getCountry().toString());
         System.err.println(nameGen.name().fullName());
@@ -88,17 +106,26 @@ public class App
         //fromDB = OurDB.ourDBMovie_Touch(fromDB);
         //System.out.println(jsonMapper.writeValueAsString(fromDB));
 
-        new NetScrape.SearchCriteria();
+        OurDB.EnableCrew(true);
         int res = NetScrape.searchAndStore(
                 SearchCriteria.builder().
-                maxResults(53).originCountry("DK").build());
+                maxResults(1200).originCountry("DK").
+                after(LocalDate.now().minusYears(5))
+                .build());
 
-        System.out.println(res);
-        System.out.println(res);
-        System.out.println(res);
-        System.out.println(res);
-        System.out.println(res);
+        List<OurDBMovie> allMovies = OurDB.ourDBMovie_GetAll();
+        List<OurDBMovie> allHorrorMovies = OurDB.ourDBMovie_FindByGenre(new OurDBGenre("horror", null));
+        List<OurDBMovie> mWDir = OurDB.ourDBMovie_FindByDirector(4453);
+        List<OurDBMovie> mWActor = OurDB.ourDBMovie_FindByActor(4467);
 
+        for (OurDBMovie m : allHorrorMovies) {
+        }
+
+        for (OurDBMovie m : mWDir) {
+        }
+
+        for (OurDBMovie m : mWActor) {
+        }
 
         EMF.close();
 

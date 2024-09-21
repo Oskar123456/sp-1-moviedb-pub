@@ -25,5 +25,5 @@ public class OurDBKeyword
 {
     @Id @NaturalId public String name;
     /* RELATIONS */
-    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @ManyToMany public Set<OurDBMovie> movies;
+    @JsonIgnore @Exclude @lombok.EqualsAndHashCode.Exclude @ManyToMany(mappedBy = "keywords") public Set<OurDBMovie> movies;
 }

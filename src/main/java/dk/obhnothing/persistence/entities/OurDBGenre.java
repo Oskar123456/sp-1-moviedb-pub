@@ -25,5 +25,5 @@ public class OurDBGenre
 {
     @Id @NaturalId public String name;
     /* RELATIONS */
-    @JsonIgnore @Exclude @ManyToMany @lombok.EqualsAndHashCode.Exclude public Set<OurDBMovie> movies;
+    @JsonIgnore @Exclude @ManyToMany(mappedBy = "genres") @lombok.EqualsAndHashCode.Exclude public Set<OurDBMovie> movies;
 }

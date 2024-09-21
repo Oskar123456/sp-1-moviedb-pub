@@ -75,7 +75,7 @@ public class Mapping
                 persIn.profile_path, new HashSet<>(), new HashSet<>()).withUId(persIn.id);
     }
     public static OurDBCrew tMDBCrew_OurDBCrew(tMDBCrew crewIn) {
-        return new OurDBCrew(null, crewIn.job, null, null);
+        return new OurDBCrew(null, crewIn.job, new OurDBPers().withUId(crewIn.id), null);
     }
     public static OurDBCast tMDBCast_OurDBCast(tMDBCast castIn) {
         return new OurDBCast(null, castIn.order, castIn.character, new OurDBPers().withUId(castIn.id), null);
