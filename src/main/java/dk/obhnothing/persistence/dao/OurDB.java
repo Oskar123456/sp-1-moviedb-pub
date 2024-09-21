@@ -143,7 +143,7 @@ public class OurDB
     {
         try (EntityManager em = EMF.createEntityManager()) {
             em.getTransaction().begin();
-            return em.createQuery("select m from OurDBMovie m where ext_id = ?1", OurDBMovie.class).
+            return em.createQuery("select m from OurDBMovie m where tmdb_id = ?1", OurDBMovie.class).
                 setParameter(1, extId).getSingleResult();
         }
         catch (Exception e) {

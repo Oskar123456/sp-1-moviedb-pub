@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Random;
 
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.javafaker.Faker;
@@ -14,19 +12,17 @@ import dk.obhnothing.persistence.HibernateConfig;
 import dk.obhnothing.persistence.dao.OurDB;
 import dk.obhnothing.persistence.service.NetScrape;
 import dk.obhnothing.persistence.service.NetScrape.SearchCriteria;
+import dk.obhnothing.utilities.PrettyPrinter;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
-import java.time.format.DateTimeFormatter;
 
-import dk.obhnothing.persistence.dao.OurDB;
 import dk.obhnothing.persistence.dto.tMDBBase;
 import dk.obhnothing.persistence.dto.tMDBBaseLst;
-import dk.obhnothing.persistence.dto.tMDBFullDesc;
 import dk.obhnothing.persistence.dto.tMDBPers;
-import dk.obhnothing.persistence.entities.OurDBCast;
 import dk.obhnothing.persistence.entities.OurDBCrew;
 import dk.obhnothing.persistence.entities.OurDBGenre;
+import dk.obhnothing.persistence.entities.OurDBKeyword;
 import dk.obhnothing.persistence.entities.OurDBMovie;
 
 /*
@@ -114,17 +110,34 @@ public class App
                 .build());
 
         List<OurDBMovie> allMovies = OurDB.ourDBMovie_GetAll();
+        List<OurDBGenre> allGenres = OurDB.ourDBGenre_GetAll();
+        List<OurDBKeyword> allKeywords = OurDB.ourDBKeyword_GetAll();
         List<OurDBMovie> allHorrorMovies = OurDB.ourDBMovie_FindByGenre(new OurDBGenre("horror", null));
         List<OurDBMovie> mWDir = OurDB.ourDBMovie_FindByDirector(4453);
         List<OurDBMovie> mWActor = OurDB.ourDBMovie_FindByActor(4467);
 
+        System.out.println(" >>> Database stats:");
+        System.out.printf("\tSize: %d%n", allMovies.size());
+        System.out.printf("\tGenres: %d%n", allGenres.size());
+        allGenres.stream().forEach(g -> System.out.printf("%s, ", g.name));
+        System.out.println();
+        System.out.printf("\tKeywords: %d%n", allKeywords.size());
+        //System.out.println(allKeywords.toString());
+        System.out.println(" >>> Printing contents:");
+
+        System.out.println(" >>> All horror movies in database:");
         for (OurDBMovie m : allHorrorMovies) {
+            System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
 
+        System.out.println(" >>> All movies directed by 'Thomas Vinterberg' in database:");
         for (OurDBMovie m : mWDir) {
+            System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
 
+        System.out.println(" >>> All movies with 'Martin Brygmann' in database:");
         for (OurDBMovie m : mWActor) {
+            System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
 
         EMF.close();

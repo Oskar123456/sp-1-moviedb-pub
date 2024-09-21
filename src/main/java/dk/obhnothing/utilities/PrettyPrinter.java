@@ -1,10 +1,25 @@
 package dk.obhnothing.utilities;
 
+import dk.obhnothing.persistence.entities.OurDBCast;
+import dk.obhnothing.persistence.entities.OurDBCmp;
+import dk.obhnothing.persistence.entities.OurDBColl;
+import dk.obhnothing.persistence.entities.OurDBCrew;
+import dk.obhnothing.persistence.entities.OurDBGenre;
+import dk.obhnothing.persistence.entities.OurDBKeyword;
+import dk.obhnothing.persistence.entities.OurDBMovie;
+import dk.obhnothing.persistence.entities.OurDBPers;
+
 import java.lang.reflect.Field;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
+
+import dk.obhnothing.persistence.dao.OurDB;
+import dk.obhnothing.persistence.entities.OurDBCast;
+import dk.obhnothing.persistence.entities.OurDBMovie;
 
 public class PrettyPrinter
 {
@@ -44,11 +59,38 @@ public class PrettyPrinter
         }
     }
 
+    private static Locale getLocale(String iso_3166_1)
+    {
+        Locale[] ls = Locale.getAvailableLocales();
+        for (Locale l : ls)
+            if (l.getCountry().contains(iso_3166_1))
+                return l;
+        return null;
+    }
+
     public static void withColor(String str, ANSIColorCode col)
     {
         if (ANSIColorMap == null)
             Init();
         System.out.print(ANSIColorMap.get(col) + str + ANSIColorMap.get(ANSIColorCode.ANSI_RESET));
+    }
+
+    public static String OurDBMovie_Print(OurDBMovie m)
+    {
+        DateTimeFormatter ft = DateTimeFormatter.ISO_LOCAL_DATE;
+        m = OurDB.ourDBMovie_Touch(m);
+        String dirName = m.crew.iterator().next().person.name;
+        String res = String.format("[%s (%s, %s) | directed by: %s | starring: ",
+                m.original_title, ft.format(m.release_date),
+                new Locale(m.original_language_iso_639_1).getLanguage(), dirName);
+        int i = 0;
+        for (OurDBCast c : m.cast) {
+            if (i >= 5)
+                break;
+            res += c.person.name + ((i < 4) ? ", " : " and others...");
+            i++;
+        }
+        return res + "]";
     }
 
     public static void arr2d(int[][] arr, Predicate<Integer> highlightCond)
