@@ -14,4 +14,4 @@ In this exercise we will train our data collecting skills using JPA, DTOs, Java 
 
 ### Overview
 
-![uml]([https://github.com/Oskar123456/cphdat-sp-1-moviedb/blob/master/src/main/resources/images/puml.png?raw=true)
+![uml]([https://github.com/Oskar123456/cphdat-sp-1-moviedb/blob/master/src/main/resources/images/puml.png)
