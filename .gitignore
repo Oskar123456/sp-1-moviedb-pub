@@ -870,3 +870,5 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/c,c++,cmake,linux,windows,macos,clion,visualstudio,visualstudiocode,vim,emacs,nohup
+
+notes.md
