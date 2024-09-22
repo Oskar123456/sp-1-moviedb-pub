@@ -14,4 +14,4 @@ In this exercise we will train our data collecting skills using JPA, DTOs, Java 
 
 ### Overview
 
-[uml](src/main/resources/images/puml.png)
+[uml](src/main/resources/images/puml.png?raw=true)
