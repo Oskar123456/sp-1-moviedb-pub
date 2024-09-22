@@ -1,5 +1,6 @@
 package dk.obhnothing;
 
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Random;
@@ -47,8 +48,14 @@ public class App
     public static void main(String[] args) throws Exception
     {
         /* INIT */
+        PrintStream oOut = System.out;
+        PrintStream eOut = System.err;
+        System.setOut(new PrintStream(System.out.nullOutputStream()));
+        System.setErr(new PrintStream(System.out.nullOutputStream()));
         HibernateConfig.Init(HibernateConfig.Mode.DEV, dbname, dbuser, dbpw);
         EMF = HibernateConfig.getEntityManagerFactory();
+        System.setOut(oOut);
+        System.setErr(eOut);
 
         NetScrape.Init(apitoken);
         OurDB.Init(EMF);
