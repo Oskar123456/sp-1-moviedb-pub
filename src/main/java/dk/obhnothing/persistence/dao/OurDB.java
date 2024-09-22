@@ -54,7 +54,7 @@ public class OurDB
             return m;
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -67,7 +67,7 @@ public class OurDB
             em.getTransaction().commit();
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
         return newM;
@@ -86,7 +86,7 @@ public class OurDB
             }
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
         }
         return false;
     }
@@ -100,7 +100,7 @@ public class OurDB
                 setParameter(1, "%" + needle + "%").getResultList();
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
         }
         return null;
     }
@@ -113,7 +113,7 @@ public class OurDB
                 setParameter(1, id).getSingleResult();
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -126,7 +126,7 @@ public class OurDB
                     "select m from OurDBMovie m inner join m.cast c where c.person.ext_id = ?1",
                     OurDBMovie.class).setParameter(1, actorId).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -139,7 +139,7 @@ public class OurDB
                     "select m from OurDBMovie m inner join m.crew c where c.job ilike 'director' and c.person.ext_id = ?1",
                     OurDBMovie.class).setParameter(1, directorId).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -152,7 +152,7 @@ public class OurDB
             return em.createQuery("select m from OurDBMovie m where ?1 member of m.genres", OurDBMovie.class).
                 setParameter(1, genre).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -163,7 +163,7 @@ public class OurDB
             em.getTransaction().begin();
             return em.createQuery("select k from OurDBPers k", OurDBPers.class).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -174,7 +174,7 @@ public class OurDB
             em.getTransaction().begin();
             return em.createQuery("select k from OurDBKeyword k", OurDBKeyword.class).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -185,7 +185,7 @@ public class OurDB
             em.getTransaction().begin();
             return em.createQuery("select g from OurDBGenre g", OurDBGenre.class).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -196,7 +196,7 @@ public class OurDB
             em.getTransaction().begin();
             return (Double) em.createQuery("select AVG(m.vote_average) from OurDBMovie m").getSingleResult();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -207,7 +207,7 @@ public class OurDB
             em.getTransaction().begin();
             return em.createQuery("select m from OurDBMovie m", OurDBMovie.class).getResultList();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -220,7 +220,7 @@ public class OurDB
                 setParameter(1, extId).getSingleResult();
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -233,7 +233,7 @@ public class OurDB
                 setParameter(1, extId).getSingleResult();
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             return null;
         }
     }
@@ -249,7 +249,7 @@ public class OurDB
                     setParameter(1, m.tmdb_id).getSingleResult();
                 if (res != null)
                 {
-                    //System.out.printf("FAST PATH IN CREATE (%s)%n", m.title);
+                    ////System.out.printf("FAST PATH IN CREATE (%s)%n", m.title);
                     return m;
                 }
             } catch (NoResultException ignore) {}
@@ -309,7 +309,7 @@ public class OurDB
         }
 
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
             //e.printStackTrace();
             return null;
 

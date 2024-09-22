@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +43,7 @@ import lombok.ToString;
 public class NetScrape
 {
 
-    private static int pagesize = 20; // TODO: get this value by dividing totalpages / totalresults in response
+    private static int pagesize = 20;
     private static String baseurl = "https://api.themoviedb.org/3/";
     private static String apiToken;
     public static void Init(String apitoken) { apiToken = apitoken; }
@@ -70,21 +71,26 @@ public class NetScrape
         long nanotimerstart = System.nanoTime();
         try {
             jobqueue.shutdown();
-            for (Future<List<OurDBMovie>> f : results) {
-                //System.out.printf("Waiting for results... (%d / %d done)%n", res, criteria.maxResults);
-                List<OurDBMovie> ms = f.get();
-                for (OurDBMovie movie : ms) {
-                    if (OurDB.ourDBMovie_Create(movie) != null)
-                        res++;
+            while (results.size() > 0) {
+                System.out.printf("Waiting for results (~%d seconds so far)... (%d / %d (%.1f%%) done)%n",
+                        Duration.ofNanos(System.nanoTime() - nanotimerstart).getSeconds(),
+                        res, criteria.maxResults, 100.0 * ((float)res / (float)criteria.maxResults));
+                for (int i = 0; i < results.size(); i++) {
+                    if (!results.get(i).isDone())
+                        continue;
+                    List<OurDBMovie> ms = results.get(i).get();
+                    for (OurDBMovie movie : ms)
+                        if (OurDB.ourDBMovie_Create(movie) != null)
+                            res++;
+                    results.remove(i);
                 }
+                Thread.sleep(1000); // lol
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        long nanoelapsed = System.nanoTime() - nanotimerstart;
-        Duration dur = Duration.ofNanos(nanoelapsed);
         System.out.printf("Fetched %d (upper limit of search: %d (%.1f%%)) results in ~%d seconds...%n", res, criteria.maxResults,
-                (float)res / (float)criteria.maxResults, dur.getSeconds());
+                100.0 * ((float)res / (float)criteria.maxResults), Duration.ofNanos(System.nanoTime() - nanotimerstart).getSeconds());
         return res;
     }
 
