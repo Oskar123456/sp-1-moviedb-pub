@@ -54,6 +54,24 @@ public class OurDB
         }
     }
 
+    public static boolean ourDBMovie_DeleteById(Integer id)
+    {
+        try (EntityManager em = EMF.createEntityManager()) {
+            em.getTransaction().begin();
+            OurDBMovie m = em.createQuery("select m from OurDBMovie m where id = ?1", OurDBMovie.class).
+                setParameter(1, id).getSingleResult();
+            if (m != null && m.id.equals(id)) {
+                em.remove(m);
+                em.getTransaction().commit();
+                return true;
+            }
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
     public static OurDBMovie ourDBMovie_FindById(Integer id)
     {
         try (EntityManager em = EMF.createEntityManager()) {
