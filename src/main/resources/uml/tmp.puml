@@ -1,0 +1,130 @@
+@startuml
+!theme blueprint
+
+class OurDBMovie
+{
+    id : Integer <<key>>;
+    ..
+    tmdb_id : Integer;
+    backdrop_path : String;
+    original_title : String;
+    overview : String;
+    popularity : Double;
+    poster_path : String;
+    release_date : LocalDate;
+    title : String;
+    vote_average : Double;
+    vote_count : Integer;
+    budget : Double;
+    homepage : String;
+    revenue : Double;
+    runtime : Duration;
+    tagline : String;
+    status : OurDBStatus;
+    String : public original_language_iso_639_1;
+    spoken_languages_iso_639_1 : Set<String>;
+    origin_country_iso_3166_1 : Set<String>;
+    production_countries_iso_3166_1 : Set<String>;
+}
+
+OurDBMovie "0..*" }--{ "0..*" OurDBGenre
+OurDBMovie "0..*" }--{ "0..*" OurDBKeyword
+OurDBMovie "1" --{ "0..*" OurDBCast
+OurDBMovie "1" --{ "0..*" OurDBCrew
+OurDBMovie "0..*" }--{ "0..*" OurDBCmp
+OurDBMovie "0..*" }-- "0..1" OurDBColl
+OurDBCrew "0..*" }-- "1" OurDBPers
+OurDBCast "0..*" }-- "1" OurDBPers
+
+class OurDBCrew
+{
+    id : Integer <<key>>;
+    ..
+    job : String;
+}
+
+class OurDBCast
+{
+    {static} id : Integer <<key>>;
+    ..
+    order_of_appearance : Integer ;
+    character : String;
+}
+
+class OurDBPers extends ExtId<OurDBPers, Integer>
+{
+    {static} ext_id : Integer <<key>>;
+    ..
+    adult : String;
+    also_known_as : String[];
+    biography : String;
+    birthday : LocalDate;
+    deathday : LocalDate;
+    gender : Integer;
+    homepage : String;
+    imdb_id : String;
+    known_for_department : String;
+    name : String;
+    place_of_birth : String;
+    popularity : Double;
+    profile_path : String;
+}
+
+class OurDBGenre
+{
+    {static} name : String <<key>>;
+}
+
+class OurDBKeyword
+{
+    {static} name : String <<key>>;
+}
+
+class OurDBColl extends ExtId<OurDBColl, Integer>
+{
+    {static} ext_id : Integer <<key>>;
+    ..
+    name : String;
+    poster_path : String;
+    backdrop_path : String;
+}
+
+class OurDBCmp extends ExtId<OurDBCmp, Integer>
+{
+    {static} ext_id : Integer <<key>>;
+    ..
+    logo_path : String;
+    name : String;
+    origin_country_iso_3166_1 : String;
+}
+
+abstract class ExtId
+{
+    {static} ext_id : Integer <<key>>;
+    ..
+    {abstract} T withUId(U extId);
+}
+
+@enduml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
