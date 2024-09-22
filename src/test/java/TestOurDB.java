@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,10 +21,14 @@ import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-/**
- * TestOurDB
- * 2024-09-22
+/*
+ * Web development....
+ * -------------------
+ * Oskar Bahner Hansen
+ * .........2024-09-17
+ * -------------------
  */
+
 public class TestOurDB
 {
 
@@ -74,21 +79,47 @@ public class TestOurDB
         tMDBFullDesc tmdbM = NetScrape.fetchDets(833339);
         OurDBMovie ourdbM  = Mapping.tMDBFullDesc_OurDBMovie(tmdbM);
         OurDBMovie storedM = OurDB.ourDBMovie_Create(ourdbM);
+
         assertEquals(ourdbM.tmdb_id, tmdbM.id, "assert fetched and mapped movie are the same DB%n");
         assertEquals(ourdbM.tmdb_id, storedM.tmdb_id, "assert fetched and stored movie are the same DB%n");
+
         currentM = storedM;
+    }
+
+    @Test @DisplayName("Test update movie")
+    void TestUpdate()
+    {
+        tMDBFullDesc tmdbM = NetScrape.fetchDets(980026);
+        OurDBMovie ourdbM  = Mapping.tMDBFullDesc_OurDBMovie(tmdbM);
+        OurDBMovie storedM = OurDB.ourDBMovie_Create(ourdbM);
+
+        OurDBMovie retM = OurDB.ourDBMovie_FindById(storedM.id);
+
+        assertNotEquals(retM.original_title, "update title");
+
+        retM.original_title = "update title";
+        OurDB.ourDBMovie_Update(retM);
+        retM = OurDB.ourDBMovie_FindById(storedM.id);
+
+        assertEquals(retM.original_title, "update title");
     }
 
     @Test @DisplayName("Test database movie deletion")
     void TestDelete()
     {
         OurDBMovie retM = OurDB.ourDBMovie_FindById(currentM.id);
+
         assertNotNull(retM, String.format("assert %d (%s) exists in DB%n", currentM.id, currentM.original_title));
+
         boolean success = OurDB.ourDBMovie_DeleteById(currentM.id);
+
         assertTrue(success, String.format("assert %d (%s) deleted in DB%n", currentM.id, currentM.original_title));
+
         boolean successAgain = OurDB.ourDBMovie_DeleteById(currentM.id);
+
         assertFalse(successAgain, String.format("assert %d (%s) not deleted twice in DB%n", currentM.id, currentM.original_title));
         retM = OurDB.ourDBMovie_FindById(currentM.id);
+
         assertNull(retM, String.format("assert %d (%s) does not exists in DB%n", currentM.id, currentM.original_title));
     }
 
@@ -109,26 +140,3 @@ public class TestOurDB
         drop table \"ourdbmovie_spoken_languages_iso_639_1\" cascade;""";
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -21,6 +21,14 @@ import dk.obhnothing.persistence.dao.OurDB;
 import dk.obhnothing.persistence.entities.OurDBCast;
 import dk.obhnothing.persistence.entities.OurDBMovie;
 
+/*
+ * Web development....
+ * -------------------
+ * Oskar Bahner Hansen
+ * .........2024-09-17
+ * -------------------
+ */
+
 public class PrettyPrinter
 {
     private static final String colorStrings[] = {

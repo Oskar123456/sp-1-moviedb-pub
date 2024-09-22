@@ -17,6 +17,14 @@ import dk.obhnothing.persistence.entities.OurDBMovie;
 import dk.obhnothing.persistence.entities.OurDBPers;
 import jakarta.persistence.EntityManagerFactory;
 
+/*
+ * Web development....
+ * -------------------
+ * Oskar Bahner Hansen
+ * .........2024-09-17
+ * -------------------
+ */
+
 public class HibernateConfig {
     private static EntityManagerFactory emf;
     public static EntityManagerFactory getEntityManagerFactory() {

@@ -13,9 +13,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 
-/**
- * OurDB
+/*
+ * Web development....
+ * -------------------
+ * Oskar Bahner Hansen
+ * .........2024-09-17
+ * -------------------
  */
+
 public class OurDB
 {
 
@@ -54,6 +59,20 @@ public class OurDB
         }
     }
 
+    public static OurDBMovie ourDBMovie_Update(OurDBMovie newM)
+    {
+        try (EntityManager em = EMF.createEntityManager()) {
+            em.getTransaction().begin();
+            newM = em.merge(newM);
+            em.getTransaction().commit();
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return newM;
+    }
+
     public static boolean ourDBMovie_DeleteById(Integer id)
     {
         try (EntityManager em = EMF.createEntityManager()) {
@@ -70,6 +89,20 @@ public class OurDB
             System.err.println(e.getMessage());
         }
         return false;
+    }
+
+
+    public static List<OurDBMovie> ourDBMovie_FindByName(String needle)
+    {
+        try (EntityManager em = EMF.createEntityManager()) {
+            em.getTransaction().begin();
+            return em.createQuery("select m from OurDBMovie m where m.original_title ilike ?1", OurDBMovie.class).
+                setParameter(1, "%" + needle + "%").getResultList();
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
     }
 
     public static OurDBMovie ourDBMovie_FindById(Integer id)
@@ -151,6 +184,17 @@ public class OurDB
         try (EntityManager em = EMF.createEntityManager()) {
             em.getTransaction().begin();
             return em.createQuery("select g from OurDBGenre g", OurDBGenre.class).getResultList();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static Double ourDBMovie_GetAvgRating()
+    {
+        try (EntityManager em = EMF.createEntityManager()) {
+            em.getTransaction().begin();
+            return (Double) em.createQuery("select AVG(m.vote_average) from OurDBMovie m").getSingleResult();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;

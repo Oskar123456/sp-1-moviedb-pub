@@ -67,6 +67,8 @@ public class App
 
         /* TEST */
 
+        System.out.printf("%n%n%n");
+
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
         jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -85,34 +87,45 @@ public class App
         List<OurDBMovie> allHorrorMovies = OurDB.ourDBMovie_FindByGenre(new OurDBGenre("horror", null));
         List<OurDBMovie> mWDir = OurDB.ourDBMovie_FindByDirector(4453);
         List<OurDBMovie> mWActor = OurDB.ourDBMovie_FindByActor(4467);
+        List<OurDBMovie> mWName = OurDB.ourDBMovie_FindByName("druk");
+        List<OurDBMovie> mWNameVand = OurDB.ourDBMovie_FindByName("vand");
+        Double avgRating = OurDB.ourDBMovie_GetAvgRating();
 
-        PrettyPrinter.withColor(" >>> Database stats:", PrettyPrinter.ANSIColorCode.ANSI_RED);
-        System.out.println();
+        PrettyPrinter.withColor(" >>> Database stats:%n", PrettyPrinter.ANSIColorCode.ANSI_RED);
         PrettyPrinter.withColor(String.format("\tSize: %d movies, %d people%n", allMovies.size(), allPers.size()),  PrettyPrinter.ANSIColorCode.ANSI_RED);
         PrettyPrinter.withColor(String.format("\tGenres: %d", allGenres.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
         allGenres.stream().forEach(g -> System.out.printf("%n\t\t%s", g.name));
-        System.out.println();
-        PrettyPrinter.withColor(String.format("\tKeywords: %d%n", allKeywords.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        PrettyPrinter.withColor(String.format(" >>> Printing contents:"), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        System.out.println();
+        PrettyPrinter.withColor(String.format("%n\tKeywords: %d%n", allKeywords.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
+        PrettyPrinter.withColor(String.format(" >>> Printing contents:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
 
-        PrettyPrinter.withColor(String.format(" >>> All horror movies in database:"), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        System.out.println();
+        PrettyPrinter.withColor(String.format(" >>> All horror movies in database:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
         for (OurDBMovie m : allHorrorMovies) {
             System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
 
-        PrettyPrinter.withColor(String.format(" >>> All movies directed by 'Thomas Vinterberg' in database:"), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        System.out.println();
+        PrettyPrinter.withColor(String.format(" >>> All movies directed by 'Thomas Vinterberg' in database:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
         for (OurDBMovie m : mWDir) {
             System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
 
-        PrettyPrinter.withColor(String.format(" >>> All movies with 'Martin Brygmann' in database:"), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        System.out.println();
+        PrettyPrinter.withColor(String.format(" >>> All movies with 'Martin Brygmann' in database:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
         for (OurDBMovie m : mWActor) {
             System.out.println(PrettyPrinter.OurDBMovie_Print(m));
         }
+
+        PrettyPrinter.withColor(String.format(" >>> All movies with 'druk' in name in database:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
+        for (OurDBMovie m : mWName) {
+            System.out.println(PrettyPrinter.OurDBMovie_Print(m));
+        }
+
+        PrettyPrinter.withColor(String.format(" >>> All movies with 'vand' in name in database:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
+        for (OurDBMovie m : mWNameVand) {
+            System.out.println(PrettyPrinter.OurDBMovie_Print(m));
+        }
+
+        PrettyPrinter.withColor(String.format(" >>> Average rating (0 - 10) of movies in database: %s%n", avgRating.toString()), PrettyPrinter.ANSIColorCode.ANSI_RED);
+
+        System.out.printf("%n%n%n");
 
         EMF.close();
 
