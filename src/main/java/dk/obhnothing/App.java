@@ -53,20 +53,7 @@ public class App
         NetScrape.Init(apitoken);
         OurDB.Init(EMF);
 
-        System.out.println("Working...");
-
-        Locale loc = Locale.US;
-        Locale[] locales = Locale.getAvailableLocales();
-        System.out.println(locales.length);
-        for (Locale locale : locales) {
-            if (locale.getCountry().contains("DK"))
-                loc = locale;
-        }
-        Faker nameGen = new Faker(loc);
-        Random rng = new Random();
-
         /* TEST */
-
         System.out.printf("%n%n%n");
 
         ObjectMapper jsonMapper = new ObjectMapper();
@@ -91,7 +78,7 @@ public class App
         List<OurDBMovie> mWNameVand = OurDB.ourDBMovie_FindByName("vand");
         Double avgRating = OurDB.ourDBMovie_GetAvgRating();
 
-        PrettyPrinter.withColor(" >>> Database stats:%n", PrettyPrinter.ANSIColorCode.ANSI_RED);
+        PrettyPrinter.withColor(String.format(" >>> Database stats:%n"), PrettyPrinter.ANSIColorCode.ANSI_RED);
         PrettyPrinter.withColor(String.format("\tSize: %d movies, %d people%n", allMovies.size(), allPers.size()),  PrettyPrinter.ANSIColorCode.ANSI_RED);
         PrettyPrinter.withColor(String.format("\tGenres: %d", allGenres.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
         allGenres.stream().forEach(g -> System.out.printf("%n\t\t%s", g.name));
