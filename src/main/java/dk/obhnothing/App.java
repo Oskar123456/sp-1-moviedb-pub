@@ -20,6 +20,7 @@ import java.util.List;
 import dk.obhnothing.persistence.dto.tMDBBase;
 import dk.obhnothing.persistence.dto.tMDBBaseLst;
 import dk.obhnothing.persistence.dto.tMDBPers;
+import dk.obhnothing.persistence.entities.OurDBPers;
 import dk.obhnothing.persistence.entities.OurDBCrew;
 import dk.obhnothing.persistence.entities.OurDBGenre;
 import dk.obhnothing.persistence.entities.OurDBKeyword;
@@ -64,43 +65,11 @@ public class App
         Faker nameGen = new Faker(loc);
         Random rng = new Random();
 
-        System.err.println(loc.getCountry().toString());
-        System.err.println(nameGen.name().fullName());
         /* TEST */
-
-        System.out.println("env vars:");
-        System.out.println(apikey);
-        System.out.println(apitoken);
-        System.out.println(dbname);
-        System.out.println(dbuser);
-        System.out.println(dbpw);
-        System.out.println();
 
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.findAndRegisterModules();
         jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        //tMDBFullDesc deadpool = NetScrape.fetchDets(533535);
-        //OurDBMovie deadpoolOur = Mapping.tMDBFullDesc_OurDBMovie(deadpool);
-
-        //System.out.println("CREATING");
-        //System.out.println("CREATING");
-        //System.out.println("CREATING");
-
-        //OurDB.ourDBMovie_Create(deadpoolOur);
-
-        //System.out.println("FETCHING FROM DB");
-        //System.out.println("FETCHING FROM DB");
-        //System.out.println("FETCHING FROM DB");
-
-        //OurDBMovie fromDB = OurDB.ourDBMovie_FindById(533535);
-
-        //System.out.println("PRINTING");
-        //System.out.println("PRINTING");
-        //System.out.println("PRINTING");
-
-        //fromDB = OurDB.ourDBMovie_Touch(fromDB);
-        //System.out.println(jsonMapper.writeValueAsString(fromDB));
 
         OurDB.EnableCrew(true);
         int res = NetScrape.searchAndStore(
@@ -110,6 +79,7 @@ public class App
                 .build());
 
         List<OurDBMovie> allMovies = OurDB.ourDBMovie_GetAll();
+        List<OurDBPers> allPers = OurDB.ourDBPers_GetAll();
         List<OurDBGenre> allGenres = OurDB.ourDBGenre_GetAll();
         List<OurDBKeyword> allKeywords = OurDB.ourDBKeyword_GetAll();
         List<OurDBMovie> allHorrorMovies = OurDB.ourDBMovie_FindByGenre(new OurDBGenre("horror", null));
@@ -118,12 +88,11 @@ public class App
 
         PrettyPrinter.withColor(" >>> Database stats:", PrettyPrinter.ANSIColorCode.ANSI_RED);
         System.out.println();
-        PrettyPrinter.withColor(String.format("\tSize: %d%n", allMovies.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        PrettyPrinter.withColor(String.format("\tGenres: %d%n", allGenres.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        allGenres.stream().forEach(g -> System.out.printf("%s, ", g.name));
+        PrettyPrinter.withColor(String.format("\tSize: %d movies, %d people%n", allMovies.size(), allPers.size()),  PrettyPrinter.ANSIColorCode.ANSI_RED);
+        PrettyPrinter.withColor(String.format("\tGenres: %d", allGenres.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
+        allGenres.stream().forEach(g -> System.out.printf("%n\t\t%s", g.name));
         System.out.println();
         PrettyPrinter.withColor(String.format("\tKeywords: %d%n", allKeywords.size()), PrettyPrinter.ANSIColorCode.ANSI_RED);
-        //System.out.println(allKeywords.toString());
         PrettyPrinter.withColor(String.format(" >>> Printing contents:"), PrettyPrinter.ANSIColorCode.ANSI_RED);
         System.out.println();
 

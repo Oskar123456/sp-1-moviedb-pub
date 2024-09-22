@@ -124,6 +124,17 @@ public class OurDB
         }
     }
 
+    public static List<OurDBPers> ourDBPers_GetAll()
+    {
+        try (EntityManager em = EMF.createEntityManager()) {
+            em.getTransaction().begin();
+            return em.createQuery("select k from OurDBPers k", OurDBPers.class).getResultList();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
     public static List<OurDBKeyword> ourDBKeyword_GetAll()
     {
         try (EntityManager em = EMF.createEntityManager()) {

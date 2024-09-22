@@ -214,14 +214,6 @@ public class NetScrape
         uriStr += "&release_date.gte=" + ft.format(sc.after);
         uriStr += "&primary_release_date.lte=" + ft.format(sc.before);
         uriStr += "&release_date.lte=" + ft.format(sc.before);
-
-        // ?include_adult=false
-        // &include_video=false&language=en-US
-        // &page=1
-        // &primary_release_date.gte=2020-01-01
-        // &release_date.gte=2020-01-01
-        // &sort_by=popularity.desc
-        // &with_origin_country=DK' \
         return URI.create(uriStr);
     }
 
