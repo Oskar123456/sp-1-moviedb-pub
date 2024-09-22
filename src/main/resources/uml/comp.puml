@@ -1,0 +1,42 @@
+@startuml
+!theme blueprint
+
+package "dao" {
+  [dao.java]
+}
+
+package "dto" {
+    [tMDBMovie.java]
+    [tMDB......java]
+}
+
+package "entities" {
+    [OurDBMovie.java]
+    [OurDB......java]
+}
+
+package "service" {
+  [Mapping.java]
+  [NetScrape.java]
+}
+
+cloud "APIs" {
+    [themoviedb.org]
+}
+
+database "PostGres" {
+  folder "OurDB" {
+    [OurDBMovie]
+  }
+}
+
+
+[dao] --> [PostGres]
+[dao] --> [entities]
+[service] --> [dto]
+[service] --> [dao]
+[service] --> [APIs]
+[service] --> [entities]
+
+@enduml
+
