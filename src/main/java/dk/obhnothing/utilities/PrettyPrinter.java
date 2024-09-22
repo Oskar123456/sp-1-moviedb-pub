@@ -75,12 +75,19 @@ public class PrettyPrinter
         System.out.print(ANSIColorMap.get(col) + str + ANSIColorMap.get(ANSIColorCode.ANSI_RESET));
     }
 
+    public static String strWithColor(String str, ANSIColorCode col)
+    {
+        if (ANSIColorMap == null)
+            Init();
+        return ANSIColorMap.get(col) + str + ANSIColorMap.get(ANSIColorCode.ANSI_RESET);
+    }
+
     public static String OurDBMovie_Print(OurDBMovie m)
     {
         DateTimeFormatter ft = DateTimeFormatter.ISO_LOCAL_DATE;
         m = OurDB.ourDBMovie_Touch(m);
         String dirName = m.crew.iterator().next().person.name;
-        String res = String.format("[%s (%s, %s) | directed by: %s | starring: ",
+        String res = String.format("%s (%s, %s) | directed by: %s | starring: ",
                 m.original_title, ft.format(m.release_date),
                 new Locale(m.original_language_iso_639_1).getLanguage(), dirName);
         int i = 0;
@@ -90,7 +97,7 @@ public class PrettyPrinter
             res += c.person.name + ((i < 4) ? ", " : " and others...");
             i++;
         }
-        return res + "]";
+        return "[" + strWithColor(res, ANSIColorCode.ANSI_YELLOW) + "]";
     }
 
     public static void arr2d(int[][] arr, Predicate<Integer> highlightCond)
