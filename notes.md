@@ -1,16 +1,12 @@
 # TODO
 
-- Fix unnecesary association 
-  table [x]
-- DAO functions [o]
-- Test suite [o]
+- Fix unnecesary association table [x]
+- DAO functions [x]
+- Test suite [x]
 
 # TO(maybe)DO
 
-- Frontend
-- Speedup fetching 
-  (fx check with db before
-  fetching people)
+- Speedup fetching (fx check with db before fetching people) [x]
 
 # notes
 
