@@ -5,6 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import dk.obhnothing.persistence.entities.OurDBCast;
 import dk.obhnothing.persistence.entities.OurDBCrew;
 import dk.obhnothing.persistence.entities.OurDBMovie;
 import dk.obhnothing.persistence.entities.OurDBPers;
+import dk.obhnothing.utilities.PrettyPrinter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -51,8 +53,9 @@ public class NetScrape
         ExecutorService jobqueue = Executors.newFixedThreadPool(nCores);
         int nPages = (criteria.maxResults + pagesize - 1) / pagesize;
         int nPagesPerThread = (nPages + nCores - 1) / nCores;
-        System.out.printf("ncores: %d, nPages: %d, nPagesPerThread: %d%n%n%n", nCores, nPages, nPagesPerThread);
-        System.out.println(criteria);
+        PrettyPrinter.withColor(String.format(
+                    "NetScrape searchAndStore using %d cores to fetch at most %d results using search criteria:%n%s%n",
+                    nCores, criteria.maxResults, criteria.toString()), PrettyPrinter.ANSIColorCode.ANSI_YELLOW);
 
         List<Future<List<OurDBMovie>>> results = new ArrayList<>();
         for (int i = 0; i < nCores; i++) {
@@ -64,10 +67,11 @@ public class NetScrape
         }
 
         int res = 0;
+        long nanotimerstart = System.nanoTime();
         try {
             jobqueue.shutdown();
             for (Future<List<OurDBMovie>> f : results) {
-                System.out.printf("Waiting for results... (%d / %d done)%n", res, criteria.maxResults);
+                //System.out.printf("Waiting for results... (%d / %d done)%n", res, criteria.maxResults);
                 List<OurDBMovie> ms = f.get();
                 for (OurDBMovie movie : ms) {
                     if (OurDB.ourDBMovie_Create(movie) != null)
@@ -77,7 +81,10 @@ public class NetScrape
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        System.out.printf("Fetched %d / %d results...%n", res, criteria.maxResults);
+        long nanoelapsed = System.nanoTime() - nanotimerstart;
+        Duration dur = Duration.ofNanos(nanoelapsed);
+        System.out.printf("Fetched %d (upper limit of search: %d (%.1f%%)) results in ~%d seconds...%n", res, criteria.maxResults,
+                (float)res / (float)criteria.maxResults, dur.getSeconds());
         return res;
     }
 

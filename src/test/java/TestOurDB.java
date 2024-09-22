@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
+import org.hibernate.boot.model.source.spi.ForeignKeyContributingSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +23,7 @@ import dk.obhnothing.persistence.service.Mapping;
 import dk.obhnothing.persistence.service.NetScrape;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 
 /*
  * Web development....
@@ -57,7 +61,13 @@ public class TestOurDB
     {
         EM = EMF.createEntityManager();
         EM.getTransaction().begin();
-        EM.createNativeQuery(dropTablesSQL).executeUpdate();
+        /* wipe test database */
+        List<String> tablestodrop = EM.createNativeQuery(
+                "select 'drop table \"' || tablename || '\" cascade;' from pg_tables where pg_tables.tablename ilike 'ourdb%%';",
+                    String.class).getResultList();
+        for (String s : tablestodrop)
+            EM.createNativeQuery(s).executeUpdate();
+
         EM.getTransaction().commit();
         EM.close();
         EMF.close();
@@ -122,21 +132,4 @@ public class TestOurDB
 
         assertNull(retM, String.format("assert %d (%s) does not exists in DB%n", currentM.id, currentM.original_title));
     }
-
-    static String dropTablesSQL = """
-        drop table \"ourdbgenre\" cascade;
-        drop table \"ourdbcmp\" cascade;
-        drop table \"ourdbpers\" cascade;
-        drop table \"ourdbcoll\" cascade;
-        drop table \"ourdbmovie\" cascade;
-        drop table \"ourdbcast\" cascade;
-        drop table \"ourdbcrew\" cascade;
-        drop table \"ourdbmovie_origin_country_iso_3166_1\" cascade;
-        drop table \"ourdbmovie_ourdbcmp\" cascade;
-        drop table \"ourdbmovie_ourdbgenre\" cascade;
-        drop table \"ourdbkeyword\" cascade;
-        drop table \"ourdbmovie_ourdbkeyword\" cascade;
-        drop table \"ourdbmovie_production_countries_iso_3166_1\" cascade;
-        drop table \"ourdbmovie_spoken_languages_iso_639_1\" cascade;""";
-
 }
