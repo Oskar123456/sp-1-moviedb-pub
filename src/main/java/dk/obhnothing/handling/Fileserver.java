@@ -2,7 +2,6 @@
  * Web development....
  * -------------------
  * Oskar Bahner Hansen
- * ......obhnothing.dk
  * .........2024-09-02
  * -------------------
  */
